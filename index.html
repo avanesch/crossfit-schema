@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crossfit Kracht 8W</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --card: #1e1e1e;
+    --border: #2a2a2a;
+    --accent: #e8ff3a;
+    --accent2: #ff5c3a;
+    --text: #f0f0f0;
+    --muted: #666;
+    --success: #3aff8c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 2px solid var(--accent);
+    padding: 16px 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 2px;
+    color: var(--accent);
+  }
+
+  .week-badge {
+    background: var(--accent);
+    color: #000;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+  }
+
+  /* NAV */
+  nav {
+    display: flex;
+    overflow-x: auto;
+    padding: 12px 16px;
+    gap: 8px;
+    scrollbar-width: none;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    flex-shrink: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .nav-btn.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+  }
+
+  /* CONTENT */
+  .content { padding: 16px; max-width: 600px; margin: 0 auto; }
+
+  /* SESSION CARD */
+  .session-block {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .session-header {
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+    background: #222;
+  }
+
+  .session-tag {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+
+  .session-title {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .session-meta {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* EXERCISE */
+  .exercise {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px;
+  }
+  .exercise:last-child { border-bottom: none; }
+
+  .ex-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .ex-name {
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .ex-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    margin-left: 8px;
+  }
+  .tag-main { background: rgba(232,255,58,0.15); color: var(--accent); }
+  .tag-acc { background: rgba(255,92,58,0.15); color: var(--accent2); }
+
+  .ex-scheme {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .sets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 8px;
+  }
+
+  .set-row {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .set-label {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 600;
+  }
+
+  .weight-input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    width: 100%;
+    padding: 2px 0;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .weight-input:focus { border-color: var(--accent); }
+  .weight-input::placeholder { color: #333; }
+
+  .set-unit { font-size: 11px; color: var(--muted); }
+
+  .done-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+  }
+  .done-btn.completed {
+    background: rgba(58,255,140,0.12);
+    border-color: var(--success);
+    color: var(--success);
+  }
+
+  /* PROGRESS BAR */
+  .week-progress {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+  }
+  .week-progress h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    color: var(--accent);
+  }
+  .prog-bar-bg {
+    background: var(--surface);
+    border-radius: 4px;
+    height: 8px;
+    margin-bottom: 6px;
+    overflow: hidden;
+  }
+  .prog-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--success));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+  .prog-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* NOTES */
+  .notes-area {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 10px;
+    width: 100%;
+    min-height: 70px;
+    resize: vertical;
+    outline: none;
+    margin-top: 10px;
+  }
+  .notes-area:focus { border-color: var(--accent); }
+  .notes-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 10px; display: block; }
+
+  .section-divider {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    padding: 10px 16px 0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ CF KRACHT</h1>
+  <span class="week-badge" id="headerWeek">WEEK 1</span>
+</header>
+
+<nav id="weekNav"></nav>
+
+<div class="content" id="mainContent"></div>
+
+<script>
+// ===================== PROGRAM DATA =====================
+const program = {
+  weeks: [
+    // WEEK 1
+    {
+      week: 1, focus: "Basis opbouwen",
+      sessions: [
+        {
+          id: "A", title: "Squat & Pull", duration: "75–90 min",
+          exercises: [
+            { name: "Back Squat", type: "main", scheme: "5×5 — zwaar, bouw op per set", sets: 5, reps: "5" },
+            { name: "Weighted Pull-up", type: "main", scheme: "4×5 — gebruik gordel indien nodig", sets: 4, reps: "5" },
+            { name: "Romanian Deadlift", type: "acc", scheme: "3×10 — focus op stretch", sets: 3, reps: "10" },
+            { name: "Ring Row", type: "acc", scheme: "3×12 — voeten hoog voor meer weerstand", sets: 3, reps: "12" },
+            { name: "Copenhagen Plank", type: "acc", scheme: "3×20 sec per kant", sets: 3, reps: "20s" },
+          ]
+        },
+        {
+          id: "B", title: "Press & Hinge", duration: "75–90 min",
+          exercises: [
+            { name: "Strict Press", type: "main", scheme: "5×5 — sta stabiel, geen heupsprint", sets: 5, reps: "5" },
+            { name: "Deadlift", type: "main", scheme: "4×4 — zwaar maar technisch perfect", sets: 4, reps: "4" },
+            { name: "DB Arnold Press", type: "acc", scheme: "3×10 per arm", sets: 3, reps: "10" },
+            { name: "Barbell Hip Thrust", type: "acc", scheme: "3×12 — pauze bovenin", sets: 3, reps: "12" },
+            { name: "Hollow Body Hold", type: "acc", scheme: "3×30 sec", sets: 3, reps: "30s" },
+          ]
+        }
+      ]
+    },
+    // WEEK 2
+    {
+      week: 2, focus: "Volume verhogen",
+      sessions: [
+        {
+          id: "A", title: "Squat & Pull", duration: "75–90 min",
+          exercises: [
+            { name: "Front Squat", type: "main", scheme: "5×4 — iets zwaarder dan vorige week", sets: 5, reps: "4" },
+            { name: "Barbell Bent-over Row", type: "main", scheme: "4×6 — buig 45°, rug recht", sets: 4, reps: "6" },
+            { name: "Good Morning", type: "acc", scheme: "3×10 — licht gewicht, diepe hip hinge", sets: 3, reps: "10" },
+            { name: "Face Pull", type: "acc", scheme: "3×15 — externe rotatie focus", sets: 3, reps: "15" },
+            { name: "Single-leg RDL", type: "acc", scheme: "3×8 per been", sets: 3, reps: "8" },
+          ]
+        },
+        {
+          id: "B", title: "Push & Hinge", duration: "75–90 min",
+          exercises: [
+            { name: "Push Press", type: "main", scheme: "5×4 — explosief duw, actief vangen", sets: 5, reps: "4" },
+            { name: "Sumo Deadlift", type: "main", scheme: "4×4 — breed stance, knieën naar buiten", sets: 4, reps: "4" },
+            { name: "DB Incline Press", type: "acc", scheme: "3×12 — gecontroleerde neergaande fase", sets: 3, reps: "12" },
+            { name: "Kettlebell Swing", type: "acc", scheme: "4×15 — explosieve heupen", sets: 4, reps: "15" },
+            { name: "L-Sit Hold", type: "acc", scheme: "3×15 sec", sets: 3, reps: "15s" },
+          ]
+        }
+      ]
+    },
+    // WEEK 3
+    {
+      week: 3, focus: "Intensiteit omhoog",
+      sessions: [
+        {
+          id: "A", title: "Squat & Upper Pull", duration: "75–90 min",
+          exercises: [
+            { name: "Back Squat", type: "main", scheme: "4×3 — zwaarder dan week 1, PR-poging", sets: 4, reps: "3" },
+            { name: "Weighted Dip", type: "main", scheme: "4×5 — volle ROM", sets: 4, reps: "5" },
+            { name: "Bulgarian Split Squat", type: "acc", scheme: "3×8 per been — achterbeen op bank", sets: 3, reps: "8" },
+            { name: "Cable Row (neutraal grip)", type: "acc", scheme: "3×12 — ellebogen lang naar achter", sets: 3, reps: "12" },
+            { name: "Ab Wheel Rollout", type: "acc", scheme: "3×8 — langzaam terug", sets: 3, reps: "8" },
+          ]
+        },
+        {
+          id: "B", title: "Hinge & Press", duration: "75–90 min",
+          exercises: [
+            { name: "Deadlift", type: "main", scheme: "3×3 — zwaar, volledig herstel tussen sets", sets: 3, reps: "3" },
+            { name: "Strict Press", type: "main", scheme: "4×4 — pauzeer niet onderaan", sets: 4, reps: "4" },
+            { name: "Single-arm DB Row", type: "acc", scheme: "3×10 per arm — elleboog omhoog", sets: 3, reps: "10" },
+            { name: "Glute Ham Raise", type: "acc", scheme: "3×8 — gecontroleerd", sets: 3, reps: "8" },
+            { name: "Pallof Press", type: "acc", scheme: "3×10 per kant", sets: 3, reps: "10" },
+          ]
+        }
+      ]
+    },
+    // WEEK 4 - DELOAD
+    {
+      week: 4, focus: "🔄 Deload — herstel",
+      sessions: [
+        {
+          id: "A", title: "Squat & Pull (licht)", duration: "60–75 min",
+          exercises: [
+            { name: "Back Squat", type: "main", scheme: "3×5 @ 60% — techniek focus", sets: 3, reps: "5" },
+            { name: "Pull-up (bodyweight)", type: "main", scheme: "3×6 — soepel bewegen", sets: 3, reps: "6" },
+            { name: "Goblet Squat", type: "acc", scheme: "3×10 — diep, hiel contact", sets: 3, reps: "10" },
+            { name: "Band Pull-Apart", type: "acc", scheme: "3×15 — schouders mobiliseren", sets: 3, reps: "15" },
+            { name: "Dead Bug", type: "acc", scheme: "3×8 per kant", sets: 3, reps: "8" },
+          ]
+        },
+        {
+          id: "B", title: "Press & Hinge (licht)", duration: "60–75 min",
+          exercises: [
+            { name: "Strict Press", type: "main", scheme: "3×5 @ 60% — herstel", sets: 3, reps: "5" },
+            { name: "Romanian Deadlift", type: "main", scheme: "3×8 — licht, stretch focus", sets: 3, reps: "8" },
+            { name: "Lateral Raise", type: "acc", scheme: "3×15 — lichte DB", sets: 3, reps: "15" },
+            { name: "Banded Hip Thrust", type: "acc", scheme: "3×15 — band voor glute activatie", sets: 3, reps: "15" },
+            { name: "Cat-Cow + Thoracic Rotation", type: "acc", scheme: "3×10 — mobiliteit", sets: 3, reps: "10" },
+          ]
+        }
+      ]
+    },
+    // WEEK 5
+    {
+      week: 5, focus: "Kracht blok 2 — zwaardere basis",
+      sessions: [
+        {
+          id: "A", title: "Squat & Trekken", duration: "75–90 min",
+          exercises: [
+            { name: "Back Squat", type: "main", scheme: "6×3 — bouw op naar max set", sets: 6, reps: "3" },
+            { name: "Pendlay Row", type: "main", scheme: "4×5 — van de grond, explosief", sets: 4, reps: "5" },
+            { name: "Hack Squat / Leg Press", type: "acc", scheme: "3×12 — quad focus", sets: 3, reps: "12" },
+            { name: "Chest-Supported Row", type: "acc", scheme: "3×10 — geen momentum", sets: 3, reps: "10" },
+            { name: "Farmer Carry", type: "acc", scheme: "4×20m — zwaar", sets: 4, reps: "20m" },
+          ]
+        },
+        {
+          id: "B", title: "Press & Deadlift variatie", duration: "75–90 min",
+          exercises: [
+            { name: "Push Press", type: "main", scheme: "5×3 — zwaarder dan week 2", sets: 5, reps: "3" },
+            { name: "Trap Bar Deadlift", type: "main", scheme: "4×4 — explosief omhoog", sets: 4, reps: "4" },
+            { name: "DB Floor Press", type: "acc", scheme: "3×12 — stabiele schouders", sets: 3, reps: "12" },
+            { name: "Nordic Curl (eccentric)", type: "acc", scheme: "3×5 — langzaam naar beneden", sets: 3, reps: "5" },
+            { name: "Hanging Knee Raise", type: "acc", scheme: "3×12", sets: 3, reps: "12" },
+          ]
+        }
+      ]
+    },
+    // WEEK 6
+    {
+      week: 6, focus: "Maximale kracht",
+      sessions: [
+        {
+          id: "A", title: "Heavy Squat & Pull", duration: "75–90 min",
+          exercises: [
+            { name: "Front Squat", type: "main", scheme: "4×2 — zwaar, pauzeer onderaan", sets: 4, reps: "2" },
+            { name: "Weighted Pull-up", type: "main", scheme: "5×3 — max gewicht dat je fris kunt", sets: 5, reps: "3" },
+            { name: "Reverse Lunge (barbell)", type: "acc", scheme: "3×8 per been", sets: 3, reps: "8" },
+            { name: "Meadows Row", type: "acc", scheme: "3×8 per arm", sets: 3, reps: "8" },
+            { name: "Suitcase Carry", type: "acc", scheme: "4×20m per kant", sets: 4, reps: "20m" },
+          ]
+        },
+        {
+          id: "B", title: "Deadlift & Press Max", duration: "75–90 min",
+          exercises: [
+            { name: "Deadlift", type: "main", scheme: "3×2 — PR-poging op set 3", sets: 3, reps: "2" },
+            { name: "Strict Press", type: "main", scheme: "4×3 — zwaarste van het programma", sets: 4, reps: "3" },
+            { name: "Z-Press", type: "acc", scheme: "3×8 — zit op de grond, geen rug compensatie", sets: 3, reps: "8" },
+            { name: "45° Back Extension", type: "acc", scheme: "3×12 — met gewicht", sets: 3, reps: "12" },
+            { name: "Plank (weighted)", type: "acc", scheme: "3×30 sec — plaat op rug", sets: 3, reps: "30s" },
+          ]
+        }
+      ]
+    },
+    // WEEK 7
+    {
+      week: 7, focus: "Crossfit-koppeling — kracht + conditioning",
+      sessions: [
+        {
+          id: "A", title: "Squat Complex & Trekken", duration: "75–90 min",
+          exercises: [
+            { name: "Back Squat + Push Press complex", type: "main", scheme: "5 rondes: 3 Squat + 3 Push Press — 1 gewicht", sets: 5, reps: "3+3" },
+            { name: "Weighted Ring Pull-up", type: "main", scheme: "4×4", sets: 4, reps: "4" },
+            { name: "Box Step-up (weighted)", type: "acc", scheme: "3×8 per been — 60cm box", sets: 3, reps: "8" },
+            { name: "Renegade Row", type: "acc", scheme: "3×8 per arm", sets: 3, reps: "8" },
+            { name: "Toes-to-Bar", type: "acc", scheme: "3×10 — kip, strict", sets: 3, reps: "10" },
+          ]
+        },
+        {
+          id: "B", title: "Hinge Complex & Press", duration: "75–90 min",
+          exercises: [
+            { name: "Deadlift + Hang Power Clean complex", type: "main", scheme: "5 rondes: 2 DL + 2 Hang Clean — 1 gewicht", sets: 5, reps: "2+2" },
+            { name: "Push Press", type: "main", scheme: "4×4 — explosief", sets: 4, reps: "4" },
+            { name: "DB Snatch (alternerend)", type: "acc", scheme: "4×6 per arm", sets: 4, reps: "6" },
+            { name: "GHD Sit-up", type: "acc", scheme: "3×12 — gecontroleerd terug", sets: 3, reps: "12" },
+            { name: "Overhead Carry", type: "acc", scheme: "4×20m per kant — 1 KB boven hoofd", sets: 4, reps: "20m" },
+          ]
+        }
+      ]
+    },
+    // WEEK 8 - PEAK
+    {
+      week: 8, focus: "🏆 Peak — test je maxima",
+      sessions: [
+        {
+          id: "A", title: "Squat & Pull — MAX TEST", duration: "75–90 min",
+          exercises: [
+            { name: "Back Squat — 1RM Poging", type: "main", scheme: "Opbouw: 60%×5 → 70%×3 → 80%×2 → 90%×1 → MAX", sets: 5, reps: "1" },
+            { name: "Weighted Pull-up — Max Reps", type: "main", scheme: "1 set bodyweight, max reps na opwarming", sets: 1, reps: "max" },
+            { name: "Bulgarian Split Squat", type: "acc", scheme: "3×8 per been — afkoeling", sets: 3, reps: "8" },
+            { name: "Face Pull", type: "acc", scheme: "3×15 — herstel schouders", sets: 3, reps: "15" },
+            { name: "Dead Bug", type: "acc", scheme: "3×8 per kant", sets: 3, reps: "8" },
+          ]
+        },
+        {
+          id: "B", title: "Deadlift & Press — MAX TEST", duration: "75–90 min",
+          exercises: [
+            { name: "Deadlift — 1RM Poging", type: "main", scheme: "Opbouw: 60%×5 → 75%×3 → 85%×1 → 95%×1 → MAX", sets: 5, reps: "1" },
+            { name: "Strict Press — 1RM Poging", type: "main", scheme: "Opbouw: 65%×5 → 80%×3 → 90%×1 → MAX", sets: 4, reps: "1" },
+            { name: "Barbell Hip Thrust", type: "acc", scheme: "3×12 — feest voor je billen 🎉", sets: 3, reps: "12" },
+            { name: "Band Pull-Apart", type: "acc", scheme: "3×20 — herstel", sets: 3, reps: "20" },
+            { name: "Hollow Body Hold", type: "acc", scheme: "3×30 sec", sets: 3, reps: "30s" },
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+// ===================== STATE =====================
+let currentWeek = 0;
+let data = {};
+
+function saveData() {
+  try { localStorage.setItem('cfkracht_v2', JSON.stringify(data)); } catch(e) {}
+}
+
+function loadData() {
+  try {
+    const s = localStorage.getItem('cfkracht_v2');
+    if (s) data = JSON.parse(s);
+  } catch(e) { data = {}; }
+}
+
+function getKey(week, session, exIdx, setIdx) {
+  return `w${week}_s${session}_e${exIdx}_set${setIdx}`;
+}
+function getDoneKey(week, session, exIdx) {
+  return `done_w${week}_s${session}_e${exIdx}`;
+}
+function getNotesKey(week, session) {
+  return `notes_w${week}_s${session}`;
+}
+
+// ===================== RENDER =====================
+function renderNav() {
+  const nav = document.getElementById('weekNav');
+  nav.innerHTML = '';
+  program.weeks.forEach((w, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'nav-btn' + (i === currentWeek ? ' active' : '');
+    btn.textContent = `W${w.week}`;
+    btn.onclick = () => { currentWeek = i; renderAll(); };
+    nav.appendChild(btn);
+  });
+}
+
+function calcProgress() {
+  const week = program.weeks[currentWeek];
+  let total = 0, done = 0;
+  week.sessions.forEach((sess, si) => {
+    sess.exercises.forEach((ex, ei) => {
+      total++;
+      const k = getDoneKey(currentWeek, si, ei);
+      if (data[k]) done++;
+    });
+  });
+  return { total, done };
+}
+
+function renderAll() {
+  renderNav();
+  const week = program.weeks[currentWeek];
+  document.getElementById('headerWeek').textContent = `WEEK ${week.week}`;
+
+  const { total, done } = calcProgress();
+  const pct = total ? Math.round((done / total) * 100) : 0;
+
+  let html = `
+    <div class="week-progress">
+      <h3>WEEK ${week.week} — ${week.focus}</h3>
+      <div class="prog-bar-bg"><div class="prog-bar-fill" style="width:${pct}%"></div></div>
+      <div class="prog-label"><span>${done}/${total} oefeningen klaar</span><span>${pct}%</span></div>
+    </div>
+  `;
+
+  week.sessions.forEach((sess, si) => {
+    html += `
+      <div class="session-block">
+        <div class="session-header">
+          <div>
+            <div class="session-tag">SESSIE ${sess.id}</div>
+            <div class="session-title">${sess.title}</div>
+            <div class="session-meta">⏱ ${sess.duration}</div>
+          </div>
+        </div>
+        <div class="section-divider">MAIN LIFTS</div>
+    `;
+
+    let lastType = 'main';
+    sess.exercises.forEach((ex, ei) => {
+      if (ex.type === 'acc' && lastType === 'main') {
+        html += `<div class="section-divider">ACCESSORY WORK</div>`;
+        lastType = 'acc';
+      }
+      const doneKey = getDoneKey(currentWeek, si, ei);
+      const isDone = !!data[doneKey];
+      const tagClass = ex.type === 'main' ? 'tag-main' : 'tag-acc';
+      const tagLabel = ex.type === 'main' ? 'Main' : 'Accessory';
+
+      html += `<div class="exercise" id="ex_${si}_${ei}">
+        <div class="ex-header">
+          <div class="ex-name">${ex.name}</div>
+          <span class="ex-tag ${tagClass}">${tagLabel}</span>
+        </div>
+        <div class="ex-scheme">${ex.scheme}</div>
+        <div class="sets-grid">`;
+
+      for (let s = 0; s < ex.sets; s++) {
+        const k = getKey(currentWeek, si, ei, s);
+        const val = data[k] || '';
+        html += `<div class="set-row">
+          <div class="set-label">Set ${s + 1} · ${ex.reps} reps</div>
+          <input class="weight-input" type="number" inputmode="decimal" placeholder="0"
+            value="${val}"
+            data-key="${k}"
+            onchange="saveWeight(this)"
+            onfocus="this.select()">
+          <div class="set-unit">kg</div>
+        </div>`;
+      }
+
+      html += `</div>
+        <button class="done-btn ${isDone ? 'completed' : ''}" onclick="toggleDone(${si},${ei})">
+          ${isDone ? '✓ Klaar' : '○ Markeer klaar'}
+        </button>
+      </div>`;
+    });
+
+    const notesKey = getNotesKey(currentWeek, si);
+    const notesVal = data[notesKey] || '';
+    html += `
+      <div class="exercise">
+        <span class="notes-label">📝 SESSIE NOTITIES</span>
+        <textarea class="notes-area" placeholder="Hoe voelde het? PR's? Blessures?" data-key="${notesKey}" onchange="saveNotes(this)">${notesVal}</textarea>
+      </div>
+      </div>`;
+  });
+
+  document.getElementById('mainContent').innerHTML = html;
+}
+
+function saveWeight(el) {
+  data[el.dataset.key] = el.value;
+  saveData();
+}
+
+function saveNotes(el) {
+  data[el.dataset.key] = el.value;
+  saveData();
+}
+
+function toggleDone(si, ei) {
+  const k = getDoneKey(currentWeek, si, ei);
+  data[k] = !data[k];
+  saveData();
+  renderAll();
+  // Scroll preservation
+  document.getElementById(`ex_${si}_${ei}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// ===================== BOOT =====================
+loadData();
+renderAll();
+</script>
+</body>
+</html>
