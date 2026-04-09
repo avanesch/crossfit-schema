@@ -1,676 +1,1602 @@
 <!DOCTYPE html>
+
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crossfit Kracht 8W</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>8-Week Strength | CrossFit Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
-
   :root {
-    --bg: #0d0d0d;
-    --surface: #161616;
-    --card: #1e1e1e;
-    --border: #2a2a2a;
-    --accent: #e8ff3a;
-    --accent2: #ff5c3a;
+    --bg: #0e0e0f;
+    --surface: #161618;
+    --card: #1e1e21;
+    --border: #2a2a2e;
+    --accent: #e8ff47;
+    --accent2: #ff6b35;
     --text: #f0f0f0;
-    --muted: #666;
-    --success: #3aff8c;
+    --muted: #7a7a85;
+    --success: #4ade80;
+    --r: 10px;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+- { box-sizing: border-box; margin: 0; padding: 0; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100vh;
-    padding-bottom: 80px;
-  }
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+min-height: 100vh;
+max-width: 480px;
+margin: 0 auto;
+padding-bottom: 80px;
+}
 
-  header {
-    background: var(--surface);
-    border-bottom: 2px solid var(--accent);
-    padding: 16px 20px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+/* HEADER */
+.header {
+background: var(–surface);
+border-bottom: 1px solid var(–border);
+padding: 16px 20px 12px;
+position: sticky;
+top: 0;
+z-index: 100;
+}
+.header-top {
+display: flex;
+align-items: center;
+justify-content: space-between;
+}
+.logo {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 26px;
+letter-spacing: 2px;
+color: var(–accent);
+line-height: 1;
+}
+.logo span { color: var(–text); }
+.week-badge {
+background: var(–accent);
+color: #000;
+font-weight: 700;
+font-size: 11px;
+padding: 4px 10px;
+border-radius: 20px;
+letter-spacing: 0.5px;
+}
+.progress-bar {
+margin-top: 10px;
+height: 3px;
+background: var(–border);
+border-radius: 2px;
+overflow: hidden;
+}
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, var(–accent), var(–accent2));
+border-radius: 2px;
+transition: width 0.5s ease;
+}
 
-  header h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 2px;
-    color: var(--accent);
-  }
+/* NAV TABS */
+.tabs {
+display: flex;
+background: var(–surface);
+border-bottom: 1px solid var(–border);
+overflow-x: auto;
+scrollbar-width: none;
+gap: 4px;
+padding: 0 12px;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+flex-shrink: 0;
+padding: 10px 14px;
+font-size: 12px;
+font-weight: 600;
+color: var(–muted);
+cursor: pointer;
+border-bottom: 2px solid transparent;
+transition: all 0.2s;
+letter-spacing: 0.3px;
+white-space: nowrap;
+}
+.tab.active {
+color: var(–accent);
+border-bottom-color: var(–accent);
+}
 
-  .week-badge {
-    background: var(--accent);
-    color: #000;
-    font-weight: 700;
-    font-size: 12px;
-    padding: 4px 10px;
-    border-radius: 20px;
-    letter-spacing: 1px;
-  }
+/* CONTENT */
+.content { padding: 16px; }
 
-  /* NAV */
-  nav {
-    display: flex;
-    overflow-x: auto;
-    padding: 12px 16px;
-    gap: 8px;
-    scrollbar-width: none;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-  }
-  nav::-webkit-scrollbar { display: none; }
-  .nav-btn {
-    flex-shrink: 0;
-    background: var(--card);
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    padding: 6px 14px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .nav-btn.active {
-    background: var(--accent);
-    color: #000;
-    border-color: var(--accent);
-  }
+/* WEEK SELECTOR */
+.week-grid {
+display: grid;
+grid-template-columns: repeat(4, 1fr);
+gap: 8px;
+margin-bottom: 20px;
+}
+.week-btn {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: var(–r);
+padding: 10px 4px;
+text-align: center;
+cursor: pointer;
+transition: all 0.2s;
+}
+.week-btn.active {
+border-color: var(–accent);
+background: rgba(232,255,71,0.08);
+}
+.week-btn.completed {
+border-color: var(–success);
+background: rgba(74,222,128,0.06);
+}
+.week-btn .wn {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 20px;
+color: var(–accent);
+line-height: 1;
+}
+.week-btn.completed .wn { color: var(–success); }
+.week-btn .wl {
+font-size: 9px;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 0.5px;
+margin-top: 2px;
+}
 
-  /* CONTENT */
-  .content { padding: 16px; max-width: 600px; margin: 0 auto; }
+/* PHASE BADGE */
+.phase-badge {
+display: inline-flex;
+align-items: center;
+gap: 6px;
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 6px;
+padding: 6px 12px;
+font-size: 11px;
+color: var(–muted);
+margin-bottom: 16px;
+letter-spacing: 0.5px;
+}
+.phase-badge .dot {
+width: 6px; height: 6px;
+border-radius: 50%;
+background: var(–accent2);
+}
 
-  /* SESSION CARD */
-  .session-block {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    margin-bottom: 16px;
-    overflow: hidden;
-  }
+/* SESSION CARD */
+.session-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: var(–r);
+margin-bottom: 12px;
+overflow: hidden;
+}
+.session-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 14px 16px;
+cursor: pointer;
+border-bottom: 1px solid var(–border);
+}
+.session-header:last-child { border-bottom: none; }
+.session-title {
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.session-icon {
+width: 34px; height: 34px;
+border-radius: 8px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 15px;
+flex-shrink: 0;
+}
+.si-a { background: rgba(232,255,71,0.12); }
+.si-b { background: rgba(255,107,53,0.12); }
+.session-name {
+font-weight: 600;
+font-size: 14px;
+}
+.session-sub {
+font-size: 11px;
+color: var(–muted);
+margin-top: 2px;
+}
+.session-meta {
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.duration-tag {
+font-size: 11px;
+color: var(–muted);
+background: var(–surface);
+padding: 3px 8px;
+border-radius: 4px;
+}
+.chevron {
+color: var(–muted);
+font-size: 12px;
+transition: transform 0.2s;
+}
+.chevron.open { transform: rotate(180deg); }
 
-  .session-header {
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid var(--border);
-    background: #222;
-  }
+/* EXERCISE BLOCK */
+.exercises {
+padding: 0 16px 16px;
+display: none;
+}
+.exercises.open { display: block; }
 
-  .session-tag {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 1px;
-    color: var(--accent);
-  }
+.block-label {
+font-size: 10px;
+font-weight: 700;
+letter-spacing: 1.5px;
+text-transform: uppercase;
+color: var(–muted);
+margin: 14px 0 8px;
+display: flex;
+align-items: center;
+gap: 8px;
+}
+.block-label::after {
+content: ‘’;
+flex: 1;
+height: 1px;
+background: var(–border);
+}
+.block-label .bl-accent { color: var(–accent); }
+.block-label .bl-accent2 { color: var(–accent2); }
 
-  .session-title {
-    font-weight: 600;
-    font-size: 15px;
-  }
+/* EMOM BOX */
+.emom-box {
+background: var(–surface);
+border: 1px solid var(–border);
+border-left: 3px solid var(–accent2);
+border-radius: var(–r);
+padding: 12px 14px;
+margin-bottom: 8px;
+}
+.emom-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 8px;
+}
+.emom-title {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 16px;
+color: var(–accent2);
+letter-spacing: 1px;
+}
+.emom-duration {
+font-size: 11px;
+color: var(–muted);
+background: var(–card);
+padding: 2px 8px;
+border-radius: 4px;
+}
+.emom-minute {
+display: flex;
+gap: 8px;
+margin-bottom: 5px;
+align-items: flex-start;
+}
+.minute-badge {
+font-size: 9px;
+font-weight: 700;
+color: var(–accent2);
+background: rgba(255,107,53,0.12);
+border-radius: 4px;
+padding: 2px 6px;
+white-space: nowrap;
+margin-top: 2px;
+flex-shrink: 0;
+letter-spacing: 0.3px;
+}
+.minute-text {
+font-size: 12px;
+color: var(–text);
+line-height: 1.5;
+}
 
-  .session-meta {
-    font-size: 12px;
-    color: var(--muted);
-    margin-top: 2px;
-  }
+/* SUPERSET BOX */
+.superset-box {
+background: var(–surface);
+border: 1px solid var(–border);
+border-left: 3px solid #a78bfa;
+border-radius: var(–r);
+padding: 12px 14px;
+margin-bottom: 8px;
+}
+.superset-header {
+display: flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 8px;
+}
+.superset-title {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 15px;
+color: #a78bfa;
+letter-spacing: 1px;
+}
+.superset-sets {
+font-size: 11px;
+color: var(–muted);
+background: var(–card);
+padding: 2px 8px;
+border-radius: 4px;
+margin-left: auto;
+}
+.ss-item {
+display: flex;
+gap: 8px;
+align-items: flex-start;
+margin-bottom: 5px;
+}
+.ss-letter {
+font-size: 9px;
+font-weight: 700;
+color: #a78bfa;
+background: rgba(167,139,250,0.12);
+border-radius: 4px;
+padding: 2px 6px;
+margin-top: 2px;
+flex-shrink: 0;
+letter-spacing: 0.3px;
+}
+.ss-text {
+font-size: 12px;
+color: var(–text);
+line-height: 1.5;
+}
 
-  /* EXERCISE */
-  .exercise {
-    border-bottom: 1px solid var(--border);
-    padding: 14px 16px;
-  }
-  .exercise:last-child { border-bottom: none; }
+/* EXERCISE ROW */
+.exercise-row {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: var(–r);
+padding: 12px 14px;
+margin-bottom: 8px;
+}
+.ex-top {
+display: flex;
+align-items: flex-start;
+justify-content: space-between;
+gap: 8px;
+margin-bottom: 8px;
+}
+.ex-name {
+font-weight: 600;
+font-size: 13px;
+flex: 1;
+}
+.ex-scheme {
+font-size: 11px;
+color: var(–accent);
+font-weight: 700;
+white-space: nowrap;
+background: rgba(232,255,71,0.1);
+padding: 2px 8px;
+border-radius: 4px;
+}
 
-  .ex-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
+/* WEIGHT LOGGER */
+.sets-grid {
+display: grid;
+grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+gap: 6px;
+margin-top: 6px;
+}
+.set-input-wrap {
+display: flex;
+flex-direction: column;
+gap: 2px;
+}
+.set-label {
+font-size: 9px;
+color: var(–muted);
+text-transform: uppercase;
+letter-spacing: 0.5px;
+text-align: center;
+}
+.set-input {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: 6px;
+color: var(–text);
+font-size: 12px;
+font-family: ‘DM Sans’, sans-serif;
+font-weight: 500;
+text-align: center;
+padding: 6px 4px;
+width: 100%;
+outline: none;
+transition: border-color 0.2s;
+}
+.set-input:focus { border-color: var(–accent); }
+.set-input.logged { border-color: var(–success); background: rgba(74,222,128,0.05); }
+.set-input::placeholder { color: var(–muted); font-size: 10px; }
 
-  .ex-name {
-    font-weight: 600;
-    font-size: 15px;
-  }
+/* TIP */
+.tip-box {
+background: rgba(232,255,71,0.05);
+border: 1px solid rgba(232,255,71,0.15);
+border-radius: var(–r);
+padding: 10px 12px;
+margin-top: 12px;
+display: flex;
+gap: 8px;
+align-items: flex-start;
+}
+.tip-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+.tip-text { font-size: 11px; color: #c8d070; line-height: 1.6; }
 
-  .ex-tag {
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    padding: 3px 8px;
-    border-radius: 10px;
-    text-transform: uppercase;
-    flex-shrink: 0;
-    margin-left: 8px;
-  }
-  .tag-main { background: rgba(232,255,58,0.15); color: var(--accent); }
-  .tag-acc { background: rgba(255,92,58,0.15); color: var(--accent2); }
+/* DONE BTN */
+.done-btn {
+width: 100%;
+background: var(–accent);
+color: #000;
+border: none;
+border-radius: var(–r);
+padding: 14px;
+font-family: ‘Bebas Neue’, cursive;
+font-size: 18px;
+letter-spacing: 2px;
+cursor: pointer;
+margin-top: 16px;
+transition: opacity 0.2s;
+}
+.done-btn:active { opacity: 0.85; }
+.done-btn.done {
+background: var(–success);
+}
 
-  .ex-scheme {
-    font-size: 13px;
-    color: var(--muted);
-    margin-bottom: 10px;
-  }
+/* OVERVIEW TAB */
+.overview-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+margin-bottom: 16px;
+}
+.stat-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: var(–r);
+padding: 14px;
+}
+.stat-val {
+font-family: ‘Bebas Neue’, cursive;
+font-size: 32px;
+color: var(–accent);
+line-height: 1;
+}
+.stat-lbl {
+font-size: 11px;
+color: var(–muted);
+margin-top: 2px;
+}
 
-  .sets-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 8px;
-  }
+.principle-card {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: var(–r);
+padding: 14px 16px;
+margin-bottom: 10px;
+}
+.pc-title {
+font-weight: 700;
+font-size: 13px;
+margin-bottom: 6px;
+display: flex;
+align-items: center;
+gap: 6px;
+}
+.pc-body {
+font-size: 12px;
+color: #aaa;
+line-height: 1.7;
+}
+.pc-accent { color: var(–accent); }
 
-  .set-row {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
+/* HISTORY TAB */
+.history-empty {
+text-align: center;
+color: var(–muted);
+padding: 60px 20px;
+font-size: 13px;
+}
+.history-entry {
+background: var(–card);
+border: 1px solid var(–border);
+border-radius: var(–r);
+padding: 12px 14px;
+margin-bottom: 8px;
+}
+.he-top {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 6px;
+}
+.he-title { font-weight: 600; font-size: 13px; }
+.he-date { font-size: 11px; color: var(–muted); }
+.he-ex { font-size: 11px; color: #aaa; margin-top: 3px; line-height: 1.6; }
 
-  .set-label {
-    font-size: 11px;
-    color: var(--muted);
-    font-weight: 600;
-  }
+/* BOTTOM NAV */
+.bottom-nav {
+position: fixed;
+bottom: 0;
+left: 50%;
+transform: translateX(-50%);
+width: 100%;
+max-width: 480px;
+background: var(–surface);
+border-top: 1px solid var(–border);
+display: flex;
+padding: 8px 0 12px;
+z-index: 100;
+}
+.nav-btn {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 3px;
+cursor: pointer;
+padding: 4px;
+border: none;
+background: none;
+color: var(–muted);
+transition: color 0.2s;
+}
+.nav-btn.active { color: var(–accent); }
+.nav-icon { font-size: 18px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; }
 
-  .weight-input {
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
-    width: 100%;
-    padding: 2px 0;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .weight-input:focus { border-color: var(--accent); }
-  .weight-input::placeholder { color: #333; }
+/* TOAST */
+.toast {
+position: fixed;
+bottom: 80px;
+left: 50%;
+transform: translateX(-50%) translateY(20px);
+background: var(–success);
+color: #000;
+padding: 10px 20px;
+border-radius: 20px;
+font-weight: 700;
+font-size: 13px;
+opacity: 0;
+transition: all 0.3s;
+pointer-events: none;
+z-index: 200;
+white-space: nowrap;
+}
+.toast.show {
+opacity: 1;
+transform: translateX(-50%) translateY(0);
+}
 
-  .set-unit { font-size: 11px; color: var(--muted); }
-
-  .done-btn {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: none;
-    border: 1px solid var(--border);
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: all 0.2s;
-  }
-  .done-btn.completed {
-    background: rgba(58,255,140,0.12);
-    border-color: var(--success);
-    color: var(--success);
-  }
-
-  /* PROGRESS BAR */
-  .week-progress {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
-    margin-bottom: 16px;
-  }
-  .week-progress h3 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 18px;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
-    color: var(--accent);
-  }
-  .prog-bar-bg {
-    background: var(--surface);
-    border-radius: 4px;
-    height: 8px;
-    margin-bottom: 6px;
-    overflow: hidden;
-  }
-  .prog-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--success));
-    border-radius: 4px;
-    transition: width 0.4s ease;
-  }
-  .prog-label {
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    color: var(--muted);
-  }
-
-  /* NOTES */
-  .notes-area {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    padding: 10px;
-    width: 100%;
-    min-height: 70px;
-    resize: vertical;
-    outline: none;
-    margin-top: 10px;
-  }
-  .notes-area:focus { border-color: var(--accent); }
-  .notes-label { font-size: 12px; color: var(--muted); font-weight: 600; margin-top: 10px; display: block; }
-
-  .section-divider {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 13px;
-    letter-spacing: 2px;
-    color: var(--muted);
-    padding: 10px 16px 0;
-  }
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
 </style>
+
 </head>
 <body>
 
-<header>
-  <h1>⚡ CF KRACHT</h1>
-  <span class="week-badge" id="headerWeek">WEEK 1</span>
-</header>
+<div class="header">
+  <div class="header-top">
+    <div class="logo">STRENGTH<span>CFX</span></div>
+    <div class="week-badge" id="currentWeekBadge">WEEK 1</div>
+  </div>
+  <div class="progress-bar">
+    <div class="progress-fill" id="progressFill" style="width:12.5%"></div>
+  </div>
+</div>
 
-<nav id="weekNav"></nav>
+<div class="tabs">
+  <div class="tab active" onclick="showView('program')">📋 Programma</div>
+  <div class="tab" onclick="showView('overview')">📊 Overzicht</div>
+  <div class="tab" onclick="showView('history')">📁 Logboek</div>
+</div>
 
-<div class="content" id="mainContent"></div>
+<div class="view active" id="view-program">
+  <div class="content">
+    <!-- Week selector -->
+    <div class="week-grid" id="weekGrid"></div>
+    <div id="sessionContainer"></div>
+  </div>
+</div>
+
+<div class="view" id="view-overview">
+  <div class="content">
+    <div class="overview-grid">
+      <div class="stat-card">
+        <div class="stat-val" id="statSessions">0</div>
+        <div class="stat-lbl">Sessies voltooid</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="statWeeks">0</div>
+        <div class="stat-lbl">Weken actief</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val" id="statTotal">0</div>
+        <div class="stat-lbl">Sets gelogd</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-val">8</div>
+        <div class="stat-lbl">Weken totaal</div>
+      </div>
+    </div>
+
+```
+<div class="principle-card">
+  <div class="pc-title">📈 Periodisering</div>
+  <div class="pc-body">
+    <strong style="color:var(--accent)">Week 1–2:</strong> Techniek & activering — leer de bewegingen kennen, bouw je baseline op.<br>
+    <strong style="color:var(--accent)">Week 3–4:</strong> Volume opbouw — meer sets/reps, progressieve belasting.<br>
+    <strong style="color:var(--accent)">Week 5–6:</strong> Intensiteit fase — hogere gewichten, compound focus, minder volume.<br>
+    <strong style="color:var(--accent)">Week 7:</strong> Peak week — maximale kracht, top sets.<br>
+    <strong style="color:var(--accent)">Week 8:</strong> Deload — 60% intensiteit, herstel, mobility.
+  </div>
+</div>
+
+<div class="principle-card">
+  <div class="pc-title">💡 Progressie-principe</div>
+  <div class="pc-body">
+    Verhoog gewicht <span class="pc-accent">elke 2 weken</span> met 2.5–5kg op compounds. EMOM-gewichten verhoog je als je alle reps comfortabel haalt. Bij gymnastics: focus op kwaliteit voor volume.
+  </div>
+</div>
+
+<div class="principle-card">
+  <div class="pc-title">🔥 Combinatie met CrossFit</div>
+  <div class="pc-body">
+    Doe dit schema op <span class="pc-accent">rust- of lichte CrossFit-dagen</span>. Minimaal 24u tussen sessions. Zorg voor goede voeding rondom je sessies: eet koolhydraten + eiwitten ±1u voor training.
+  </div>
+</div>
+
+<div class="principle-card">
+  <div class="pc-title">🏋️ Warming-up (10 min)</div>
+  <div class="pc-body">
+    1. Foam roll: thoracale wervelkolom, heupen, hamstrings (2 min)<br>
+    2. Banded hip cirkel + 90/90 stretch (2 min)<br>
+    3. Activatie: glute bridge x10, dead bug x8/zijde (2 min)<br>
+    4. Squat/hinge progressie met PVC/barbell (4 min)
+  </div>
+</div>
+```
+
+  </div>
+</div>
+
+<div class="view" id="view-history">
+  <div class="content" id="historyContent"></div>
+</div>
+
+<div class="bottom-nav">
+  <button class="nav-btn active" onclick="showView('program')">
+    <span class="nav-icon">🏋️</span>
+    <span class="nav-label">Training</span>
+  </button>
+  <button class="nav-btn" onclick="showView('overview')">
+    <span class="nav-icon">📊</span>
+    <span class="nav-label">Info</span>
+  </button>
+  <button class="nav-btn" onclick="showView('history')">
+    <span class="nav-icon">📁</span>
+    <span class="nav-label">Logboek</span>
+  </button>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-// ===================== PROGRAM DATA =====================
-const program = {
-  weeks: [
-    // WEEK 1
-    {
-      week: 1, focus: "Basis opbouwen",
-      sessions: [
-        {
-          id: "A", title: "Squat & Pull", duration: "75–90 min",
-          exercises: [
-            { name: "Back Squat", type: "main", scheme: "5×5 — zwaar, bouw op per set", sets: 5, reps: "5" },
-            { name: "Weighted Pull-up", type: "main", scheme: "4×5 — gebruik gordel indien nodig", sets: 4, reps: "5" },
-            { name: "Romanian Deadlift", type: "acc", scheme: "3×10 — focus op stretch", sets: 3, reps: "10" },
-            { name: "Ring Row", type: "acc", scheme: "3×12 — voeten hoog voor meer weerstand", sets: 3, reps: "12" },
-            { name: "Copenhagen Plank", type: "acc", scheme: "3×20 sec per kant", sets: 3, reps: "20s" },
-          ]
-        },
-        {
-          id: "B", title: "Press & Hinge", duration: "75–90 min",
-          exercises: [
-            { name: "Strict Press", type: "main", scheme: "5×5 — sta stabiel, geen heupsprint", sets: 5, reps: "5" },
-            { name: "Deadlift", type: "main", scheme: "4×4 — zwaar maar technisch perfect", sets: 4, reps: "4" },
-            { name: "DB Arnold Press", type: "acc", scheme: "3×10 per arm", sets: 3, reps: "10" },
-            { name: "Barbell Hip Thrust", type: "acc", scheme: "3×12 — pauze bovenin", sets: 3, reps: "12" },
-            { name: "Hollow Body Hold", type: "acc", scheme: "3×30 sec", sets: 3, reps: "30s" },
-          ]
-        }
-      ]
-    },
-    // WEEK 2
-    {
-      week: 2, focus: "Volume verhogen",
-      sessions: [
-        {
-          id: "A", title: "Squat & Pull", duration: "75–90 min",
-          exercises: [
-            { name: "Front Squat", type: "main", scheme: "5×4 — iets zwaarder dan vorige week", sets: 5, reps: "4" },
-            { name: "Barbell Bent-over Row", type: "main", scheme: "4×6 — buig 45°, rug recht", sets: 4, reps: "6" },
-            { name: "Good Morning", type: "acc", scheme: "3×10 — licht gewicht, diepe hip hinge", sets: 3, reps: "10" },
-            { name: "Face Pull", type: "acc", scheme: "3×15 — externe rotatie focus", sets: 3, reps: "15" },
-            { name: "Single-leg RDL", type: "acc", scheme: "3×8 per been", sets: 3, reps: "8" },
-          ]
-        },
-        {
-          id: "B", title: "Push & Hinge", duration: "75–90 min",
-          exercises: [
-            { name: "Push Press", type: "main", scheme: "5×4 — explosief duw, actief vangen", sets: 5, reps: "4" },
-            { name: "Sumo Deadlift", type: "main", scheme: "4×4 — breed stance, knieën naar buiten", sets: 4, reps: "4" },
-            { name: "DB Incline Press", type: "acc", scheme: "3×12 — gecontroleerde neergaande fase", sets: 3, reps: "12" },
-            { name: "Kettlebell Swing", type: "acc", scheme: "4×15 — explosieve heupen", sets: 4, reps: "15" },
-            { name: "L-Sit Hold", type: "acc", scheme: "3×15 sec", sets: 3, reps: "15s" },
-          ]
-        }
-      ]
-    },
-    // WEEK 3
-    {
-      week: 3, focus: "Intensiteit omhoog",
-      sessions: [
-        {
-          id: "A", title: "Squat & Upper Pull", duration: "75–90 min",
-          exercises: [
-            { name: "Back Squat", type: "main", scheme: "4×3 — zwaarder dan week 1, PR-poging", sets: 4, reps: "3" },
-            { name: "Weighted Dip", type: "main", scheme: "4×5 — volle ROM", sets: 4, reps: "5" },
-            { name: "Bulgarian Split Squat", type: "acc", scheme: "3×8 per been — achterbeen op bank", sets: 3, reps: "8" },
-            { name: "Cable Row (neutraal grip)", type: "acc", scheme: "3×12 — ellebogen lang naar achter", sets: 3, reps: "12" },
-            { name: "Ab Wheel Rollout", type: "acc", scheme: "3×8 — langzaam terug", sets: 3, reps: "8" },
-          ]
-        },
-        {
-          id: "B", title: "Hinge & Press", duration: "75–90 min",
-          exercises: [
-            { name: "Deadlift", type: "main", scheme: "3×3 — zwaar, volledig herstel tussen sets", sets: 3, reps: "3" },
-            { name: "Strict Press", type: "main", scheme: "4×4 — pauzeer niet onderaan", sets: 4, reps: "4" },
-            { name: "Single-arm DB Row", type: "acc", scheme: "3×10 per arm — elleboog omhoog", sets: 3, reps: "10" },
-            { name: "Glute Ham Raise", type: "acc", scheme: "3×8 — gecontroleerd", sets: 3, reps: "8" },
-            { name: "Pallof Press", type: "acc", scheme: "3×10 per kant", sets: 3, reps: "10" },
-          ]
-        }
-      ]
-    },
-    // WEEK 4 - DELOAD
-    {
-      week: 4, focus: "🔄 Deload — herstel",
-      sessions: [
-        {
-          id: "A", title: "Squat & Pull (licht)", duration: "60–75 min",
-          exercises: [
-            { name: "Back Squat", type: "main", scheme: "3×5 @ 60% — techniek focus", sets: 3, reps: "5" },
-            { name: "Pull-up (bodyweight)", type: "main", scheme: "3×6 — soepel bewegen", sets: 3, reps: "6" },
-            { name: "Goblet Squat", type: "acc", scheme: "3×10 — diep, hiel contact", sets: 3, reps: "10" },
-            { name: "Band Pull-Apart", type: "acc", scheme: "3×15 — schouders mobiliseren", sets: 3, reps: "15" },
-            { name: "Dead Bug", type: "acc", scheme: "3×8 per kant", sets: 3, reps: "8" },
-          ]
-        },
-        {
-          id: "B", title: "Press & Hinge (licht)", duration: "60–75 min",
-          exercises: [
-            { name: "Strict Press", type: "main", scheme: "3×5 @ 60% — herstel", sets: 3, reps: "5" },
-            { name: "Romanian Deadlift", type: "main", scheme: "3×8 — licht, stretch focus", sets: 3, reps: "8" },
-            { name: "Lateral Raise", type: "acc", scheme: "3×15 — lichte DB", sets: 3, reps: "15" },
-            { name: "Banded Hip Thrust", type: "acc", scheme: "3×15 — band voor glute activatie", sets: 3, reps: "15" },
-            { name: "Cat-Cow + Thoracic Rotation", type: "acc", scheme: "3×10 — mobiliteit", sets: 3, reps: "10" },
-          ]
-        }
-      ]
-    },
-    // WEEK 5
-    {
-      week: 5, focus: "Kracht blok 2 — zwaardere basis",
-      sessions: [
-        {
-          id: "A", title: "Squat & Trekken", duration: "75–90 min",
-          exercises: [
-            { name: "Back Squat", type: "main", scheme: "6×3 — bouw op naar max set", sets: 6, reps: "3" },
-            { name: "Pendlay Row", type: "main", scheme: "4×5 — van de grond, explosief", sets: 4, reps: "5" },
-            { name: "Hack Squat / Leg Press", type: "acc", scheme: "3×12 — quad focus", sets: 3, reps: "12" },
-            { name: "Chest-Supported Row", type: "acc", scheme: "3×10 — geen momentum", sets: 3, reps: "10" },
-            { name: "Farmer Carry", type: "acc", scheme: "4×20m — zwaar", sets: 4, reps: "20m" },
-          ]
-        },
-        {
-          id: "B", title: "Press & Deadlift variatie", duration: "75–90 min",
-          exercises: [
-            { name: "Push Press", type: "main", scheme: "5×3 — zwaarder dan week 2", sets: 5, reps: "3" },
-            { name: "Trap Bar Deadlift", type: "main", scheme: "4×4 — explosief omhoog", sets: 4, reps: "4" },
-            { name: "DB Floor Press", type: "acc", scheme: "3×12 — stabiele schouders", sets: 3, reps: "12" },
-            { name: "Nordic Curl (eccentric)", type: "acc", scheme: "3×5 — langzaam naar beneden", sets: 3, reps: "5" },
-            { name: "Hanging Knee Raise", type: "acc", scheme: "3×12", sets: 3, reps: "12" },
-          ]
-        }
-      ]
-    },
-    // WEEK 6
-    {
-      week: 6, focus: "Maximale kracht",
-      sessions: [
-        {
-          id: "A", title: "Heavy Squat & Pull", duration: "75–90 min",
-          exercises: [
-            { name: "Front Squat", type: "main", scheme: "4×2 — zwaar, pauzeer onderaan", sets: 4, reps: "2" },
-            { name: "Weighted Pull-up", type: "main", scheme: "5×3 — max gewicht dat je fris kunt", sets: 5, reps: "3" },
-            { name: "Reverse Lunge (barbell)", type: "acc", scheme: "3×8 per been", sets: 3, reps: "8" },
-            { name: "Meadows Row", type: "acc", scheme: "3×8 per arm", sets: 3, reps: "8" },
-            { name: "Suitcase Carry", type: "acc", scheme: "4×20m per kant", sets: 4, reps: "20m" },
-          ]
-        },
-        {
-          id: "B", title: "Deadlift & Press Max", duration: "75–90 min",
-          exercises: [
-            { name: "Deadlift", type: "main", scheme: "3×2 — PR-poging op set 3", sets: 3, reps: "2" },
-            { name: "Strict Press", type: "main", scheme: "4×3 — zwaarste van het programma", sets: 4, reps: "3" },
-            { name: "Z-Press", type: "acc", scheme: "3×8 — zit op de grond, geen rug compensatie", sets: 3, reps: "8" },
-            { name: "45° Back Extension", type: "acc", scheme: "3×12 — met gewicht", sets: 3, reps: "12" },
-            { name: "Plank (weighted)", type: "acc", scheme: "3×30 sec — plaat op rug", sets: 3, reps: "30s" },
-          ]
-        }
-      ]
-    },
-    // WEEK 7
-    {
-      week: 7, focus: "Crossfit-koppeling — kracht + conditioning",
-      sessions: [
-        {
-          id: "A", title: "Squat Complex & Trekken", duration: "75–90 min",
-          exercises: [
-            { name: "Back Squat + Push Press complex", type: "main", scheme: "5 rondes: 3 Squat + 3 Push Press — 1 gewicht", sets: 5, reps: "3+3" },
-            { name: "Weighted Ring Pull-up", type: "main", scheme: "4×4", sets: 4, reps: "4" },
-            { name: "Box Step-up (weighted)", type: "acc", scheme: "3×8 per been — 60cm box", sets: 3, reps: "8" },
-            { name: "Renegade Row", type: "acc", scheme: "3×8 per arm", sets: 3, reps: "8" },
-            { name: "Toes-to-Bar", type: "acc", scheme: "3×10 — kip, strict", sets: 3, reps: "10" },
-          ]
-        },
-        {
-          id: "B", title: "Hinge Complex & Press", duration: "75–90 min",
-          exercises: [
-            { name: "Deadlift + Hang Power Clean complex", type: "main", scheme: "5 rondes: 2 DL + 2 Hang Clean — 1 gewicht", sets: 5, reps: "2+2" },
-            { name: "Push Press", type: "main", scheme: "4×4 — explosief", sets: 4, reps: "4" },
-            { name: "DB Snatch (alternerend)", type: "acc", scheme: "4×6 per arm", sets: 4, reps: "6" },
-            { name: "GHD Sit-up", type: "acc", scheme: "3×12 — gecontroleerd terug", sets: 3, reps: "12" },
-            { name: "Overhead Carry", type: "acc", scheme: "4×20m per kant — 1 KB boven hoofd", sets: 4, reps: "20m" },
-          ]
-        }
-      ]
-    },
-    // WEEK 8 - PEAK
-    {
-      week: 8, focus: "🏆 Peak — test je maxima",
-      sessions: [
-        {
-          id: "A", title: "Squat & Pull — MAX TEST", duration: "75–90 min",
-          exercises: [
-            { name: "Back Squat — 1RM Poging", type: "main", scheme: "Opbouw: 60%×5 → 70%×3 → 80%×2 → 90%×1 → MAX", sets: 5, reps: "1" },
-            { name: "Weighted Pull-up — Max Reps", type: "main", scheme: "1 set bodyweight, max reps na opwarming", sets: 1, reps: "max" },
-            { name: "Bulgarian Split Squat", type: "acc", scheme: "3×8 per been — afkoeling", sets: 3, reps: "8" },
-            { name: "Face Pull", type: "acc", scheme: "3×15 — herstel schouders", sets: 3, reps: "15" },
-            { name: "Dead Bug", type: "acc", scheme: "3×8 per kant", sets: 3, reps: "8" },
-          ]
-        },
-        {
-          id: "B", title: "Deadlift & Press — MAX TEST", duration: "75–90 min",
-          exercises: [
-            { name: "Deadlift — 1RM Poging", type: "main", scheme: "Opbouw: 60%×5 → 75%×3 → 85%×1 → 95%×1 → MAX", sets: 5, reps: "1" },
-            { name: "Strict Press — 1RM Poging", type: "main", scheme: "Opbouw: 65%×5 → 80%×3 → 90%×1 → MAX", sets: 4, reps: "1" },
-            { name: "Barbell Hip Thrust", type: "acc", scheme: "3×12 — feest voor je billen 🎉", sets: 3, reps: "12" },
-            { name: "Band Pull-Apart", type: "acc", scheme: "3×20 — herstel", sets: 3, reps: "20" },
-            { name: "Hollow Body Hold", type: "acc", scheme: "3×30 sec", sets: 3, reps: "30s" },
-          ]
-        }
-      ]
-    }
-  ]
-};
+// ============================
+// PROGRAM DATA
+// ============================
+const program = [
+  // ─── WEEK 1 ───
+  {
+    week: 1, session: 'A', label: 'Squat + Push Dag', icon: '🏋️', iconClass: 'si-a', duration: '75–85 min',
+    phase: 'Fase 1 – Activering & techniek',
+    tip: 'Week 1 draait om techniekopbouw en je baseline bepalen. Gebruik 70–75% van je geschat max. Noteer je gewichten goed — dit is je startpunt.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk',
+        exercises: [
+          { name: 'Back Squat', scheme: '4×6', sets: 4, note: 'Staand in de rek. Focus op diepte (hips onder knees), knieën volgen teenrichting. Controleerde neergaande fase van 3 sec.' },
+          { name: 'Strict Press (barbell)', scheme: '4×6', sets: 4, note: 'Volledige extensie bovenin. Actief de bar "wegduwen" vanuit de grond. Span je core en billen aan.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset A',
+        sets: '3 rondes',
+        note: 'Wissel direct af: A1 → A2. 90 sec rust na ronde.',
+        items: [
+          { letter: 'A1', text: 'Romanian Deadlift — 3×8, zwaar maar gecontroleerd. Houd rug recht, voel de hamstrings stretchen.' },
+          { letter: 'A2', text: 'Dumbbell Arnold Press — 3×10 per kant. Draai de polsen tijdens de beweging.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Accessory (16 min)',
+        duration: '16 minuten',
+        note: 'Elke minuut van de klok een nieuwe oefening. Rust is de tijd die je overhoudt in die minuut.',
+        minutes: [
+          { min: 'MIN 1', text: 'DB Front Rack Lunges — 8 stappen (4/been). Romp recht, knie raakt bijna de grond.' },
+          { min: 'MIN 2', text: 'Ring Row — 8 reps. Zwaardere hoek = moeilijker. Elbows dicht langs het lichaam.' },
+          { min: 'MIN 3', text: 'Landmine Rotation — 6/zijde. Langzaam en gecontroleerd, rotatie vanuit de heupen.' },
+          { min: 'MIN 4', text: 'KB Goblet Squat — 10 reps met pauze van 2 sec onderaan. Perfect aanvulling op de squat.' },
+          { min: 'Herhaal', text: '× 4 (totaal 16 min)' },
+        ]
+      },
+      {
+        type: 'tip',
+        text: '💪 Na de EMOM: 5 min mobiliteit — pigeon pose, couch stretch. Dit versnelt herstel voor je CF-sessies.'
+      }
+    ]
+  },
+  {
+    week: 1, session: 'B', label: 'Hinge + Gymnastics Dag', icon: '🤸', iconClass: 'si-b', duration: '80–90 min',
+    phase: 'Fase 1 – Activering & techniek',
+    tip: 'Deadlift is de koning van posteriorketenkracht — cruciaal voor CrossFit. Neem de tijd voor techniek. De gymnastics zijn ter ondersteuning: kwaliteit boven kwantiteit.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk',
+        exercises: [
+          { name: 'Deadlift (conventional)', scheme: '4×5', sets: 4, note: 'Heupen laag in de setup, bar dicht langs het lichaam. Activeer lats voor je trekt. Geen ronde rug.' },
+          { name: 'Weighted Pull-Up / Banded Pull-Up', scheme: '4×5', sets: 4, note: 'Volledige extensie onderaan. Trek elbows naar de grond. Voeg gewicht toe als 5× bodyweight makkelijk gaat.' },
+        ]
+      },
+      {
+        type: 'gymnastics',
+        label: 'Gymnastics Ondersteuning',
+        note: '3 sets, 90 sec rust per set. Focus op positie en lichaamsspanning — dit draagt direct bij aan je kip/T2B/HSPU in CF.',
+        items: [
+          { letter: 'G1', text: 'Handstand Hold against wall — 3×30 sec. Schouders actief (shrug omhoog), core gespan, kijk naar de grond.' },
+          { letter: 'G2', text: 'Ring Dip (of Box Dip) — 3×6-8 reps. Elbows achteruit, zak tot schouders net onder de ringen. Gecontroleerd omhoog.' },
+          { letter: 'G3', text: 'L-Sit Hold (parallel bars of ringen) — 3×15-20 sec. Benen gestrekt, schouders actief. Verhoog progressief.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Accessory (12 min)',
+        duration: '12 minuten',
+        note: 'Krachtsgerichte EMOM, geen cardio-tempo. Neem de tijd voor goede uitvoering.',
+        minutes: [
+          { min: 'MIN 1', text: 'DB Romanian Deadlift (1 been) — 6/been. Gewicht in de hand aan de kant van het gestrekte been.' },
+          { min: 'MIN 2', text: 'Seated DB Shoulder Press — 10 reps. Rug recht, elbow line ter hoogte van de oren.' },
+          { min: 'MIN 3', text: 'Hollow Rock Hold — 30 sec. Ruggengraat gedrukt in de grond, armen en benen gestrekt en laag.' },
+          { min: 'Herhaal', text: '× 4 (totaal 12 min)' },
+        ]
+      },
+      {
+        type: 'tip',
+        text: '🤸 Ring Dips zijn een directe transfer naar muscle-ups. Als je nog niet sterk genoeg bent, gebruik een band om de beweging te leren kennen.'
+      }
+    ]
+  },
 
-// ===================== STATE =====================
-let currentWeek = 0;
-let data = {};
+  // ─── WEEK 2 ───
+  {
+    week: 2, session: 'A', label: 'Squat + Push Dag', icon: '🏋️', iconClass: 'si-a', duration: '75–85 min',
+    phase: 'Fase 1 – Activering & techniek',
+    tip: 'Zelfde structuur als Week 1, maar +2.5kg op de bar bij squat en press als je technisch sterk stond. Focus op bar path bij de press.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk',
+        exercises: [
+          { name: 'Front Squat', scheme: '4×6', sets: 4, note: 'Ellebogen hoog (rack positie), torso rechtop. Direct CrossFit-transfer voor wall balls, thrusters. 10–15% lichter dan back squat.' },
+          { name: 'Push Press', scheme: '4×6', sets: 4, note: 'Kleine dip vanuit de heupen, explosief omhoog. Dit is de kracht achter je thrusters. Bar eindigt loodrecht boven het hoofd.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset A',
+        sets: '3 rondes',
+        note: 'Direkt omschakelen. 90 sec rust na elke ronde.',
+        items: [
+          { letter: 'A1', text: 'Bulgarian Split Squat — 3×8/been. Achterbeen op bench, 45° voorovergebogen torso voor meer hamstring/glute activatie.' },
+          { letter: 'A2', text: 'DB Bent-Over Row — 3×10/arm. Elleboog dicht langs het lichaam, squeeze bovenin.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Accessory (16 min)',
+        duration: '16 minuten',
+        note: 'Vier oefeningen in rotatie. Gebruik een gewicht waarbij je elke set met goede vorm afmaakt.',
+        minutes: [
+          { min: 'MIN 1', text: 'KB Sumo Deadlift High Pull — 8 reps. Benen breed, kettlebell omhoog tot ellebogen boven schouders.' },
+          { min: 'MIN 2', text: 'Incline DB Bench Press — 10 reps. 30–45° hoek. Langzaam omlaag, explosief omhoog.' },
+          { min: 'MIN 3', text: 'Step-Up met DB — 8/been. Knie van achterste been niet op de grond. Volle heupextensie bovenaan.' },
+          { min: 'MIN 4', text: 'Face Pull (band/kabel) — 15 reps. Direct transfer: gezonde rotator cuff voor alle overhead werk in CF.' },
+          { min: 'Herhaal', text: '× 4 (totaal 16 min)' },
+        ]
+      },
+      { type: 'tip', text: '📌 Front squat rack positie: als je polsen pijn doen, werk dan op de elbow positie met stretchoefeningen. Een PVC-pipe front rack stretch helpt enorm.' }
+    ]
+  },
+  {
+    week: 2, session: 'B', label: 'Hinge + Upper Pull + Gymnastics', icon: '🤸', iconClass: 'si-b', duration: '80–90 min',
+    phase: 'Fase 1 – Activering & techniek',
+    tip: 'Deadlift variant wisselt om de 2 weken. Sumo deadlift traint binnenkant dijen en heupen anders dan conventional — waardevolle aanvulling.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk',
+        exercises: [
+          { name: 'Sumo Deadlift', scheme: '4×5', sets: 4, note: 'Benen breed, tenen ±45° naar buiten. Heupen dichter bij de bar dan conventional. Knieën duwen naar buiten tijdens de trek.' },
+          { name: 'Pendlay Row', scheme: '4×6', sets: 4, note: 'Bar begint op de grond, explosief omhoog, gecontroleerd terug op de grond. Torso parallel aan de grond.' },
+        ]
+      },
+      {
+        type: 'gymnastics',
+        label: 'Gymnastics Ondersteuning',
+        note: '3 sets, 2 min rust. Wees geduldig met de handstand — dit is een skill die tijd nodig heeft.',
+        items: [
+          { letter: 'G1', text: 'Pike Push-Up (of HSPU negatives) — 3×6-8. Hips hoog, hoofd tussen de armen, trace langs de grond omlaag.' },
+          { letter: 'G2', text: 'Bar Muscle-Up Transitie (kipping+) / Jumping Muscle-Up — 3×4-5. Focus op de hoge heup naar de bar.' },
+          { letter: 'G3', text: 'Tuck-to-Straddle Hold (ringen) — 3×20 sec. Kernkracht + schouderactivatie in één beweging.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset — Upper Accessory',
+        sets: '3 rondes',
+        note: 'Direkt doorschakelen. 90 sec rust na ronde.',
+        items: [
+          { letter: 'A1', text: 'Lat Pulldown of Banded Pulldown — 3×12. Wijde greep, elbows naar de heup toe.' },
+          { letter: 'A2', text: 'DB Lateral Raise — 3×12. Langzaam 3 sec omhoog, 3 sec omlaag. Rotator cuff health.' },
+        ]
+      },
+      { type: 'tip', text: '🧠 Muscle-up skill: Focus NIET op kracht alleen. De overgang is techniek. Doe pull-up + dip apart sterk voor je de combinatie aanpakt.' }
+    ]
+  },
 
-function saveData() {
-  try { localStorage.setItem('cfkracht_v2', JSON.stringify(data)); } catch(e) {}
+  // ─── WEEK 3 ───
+  {
+    week: 3, session: 'A', label: 'Squat Volume + Push', icon: '🏋️', iconClass: 'si-a', duration: '80–90 min',
+    phase: 'Fase 2 – Volume opbouw',
+    tip: 'Volume stijgt: meer sets. Verhoog ook het gewicht licht (+2.5kg) t.o.v. week 1. Je zult dit voelen — eet voldoende koolhydraten op trainingsdagen.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk (volume)',
+        exercises: [
+          { name: 'Back Squat', scheme: '5×5', sets: 5, note: 'Eén set meer dan week 1. Zorg dat de laatste 2 sets zwaar zijn maar technisch strak blijven. 3 min rust tussen sets.' },
+          { name: 'Strict Press', scheme: '5×5', sets: 5, note: 'Voeg 2.5kg toe. Let op: schouderbladen samen en omlaag voor je duwt. Actief overhead: push je hoofd door de armen.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset A – Posterior Chain',
+        sets: '4 rondes',
+        note: 'Nu 4 rondes in plaats van 3. 90 sec rust.',
+        items: [
+          { letter: 'A1', text: 'Trap Bar Deadlift of Rack Pull — 4×6. Heupen zakken minder dan conventional, meer kniextensie. Goed voor quad + posterior chain combi.' },
+          { letter: 'A2', text: 'Seated Dumbbell Press — 4×8. Rug recht, ellebogen iets voor de schouders, volledige extensie.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Accessory (20 min)',
+        duration: '20 minuten',
+        note: 'Vijf oefeningen in rotatie — volledige krachtsessie in EMOM-format.',
+        minutes: [
+          { min: 'MIN 1', text: 'Goblet Squat met pauzeherhaling (3 sec hold onderaan) — 6 reps.' },
+          { min: 'MIN 2', text: 'DB Floor Press — 10 reps. Als bench press maar vanuit de grond: korter bereik, meer tricepsfocus.' },
+          { min: 'MIN 3', text: 'KB Swing (Russian of American) — 10 reps. Explosieve heupextensie, nooit rugkracht.' },
+          { min: 'MIN 4', text: 'Cable/Band Tricep Pushdown — 12 reps. Ellebogen vast, alleen onderarm beweegt.' },
+          { min: 'MIN 5', text: 'Pallof Press (band/kabel) — 10/zijde. Anti-rotatie core: direct transfer naar overhead stabiliteit in CF.' },
+          { min: 'Herhaal', text: '× 4 (totaal 20 min)' },
+        ]
+      },
+      { type: 'tip', text: '⚡ EMOM-tip: Als je een minuut niet haalt, verlaag dan het gewicht. De intensiteit van een EMOM zit in de consistentie, niet in het maximale gewicht.' }
+    ]
+  },
+  {
+    week: 3, session: 'B', label: 'Hinge Volume + Gymnastics', icon: '🤸', iconClass: 'si-b', duration: '80–90 min',
+    phase: 'Fase 2 – Volume opbouw',
+    tip: 'Verhoog deadlift gewicht met 5kg t.o.v. week 1. Je core moet de extra belasting stabiliseren — belted of beltless, jouw keuze. Gymnastics: probeer 1 rep extra per set.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk (volume)',
+        exercises: [
+          { name: 'Deadlift (conventional)', scheme: '5×4', sets: 5, note: 'Minder reps, meer gewicht. Focuspunt: perfect bar path (scheen, knie, heup in één lijn omhoog). Reset tussen elke rep.' },
+          { name: 'Weighted Pull-Up', scheme: '5×4', sets: 5, note: 'Voeg 2.5–5kg toe (belt, vest of DB tussen benen). Tempo: 2 omhoog, 1 hold, 3 omlaag.' },
+        ]
+      },
+      {
+        type: 'gymnastics',
+        label: 'Gymnastics Focus',
+        note: '4 sets dit keer. Rust 2 min. Kwaliteit staat voorop, maar push de reps iets verder.',
+        items: [
+          { letter: 'G1', text: 'Freestanding Handstand Attempts of Wall Handstand Hold — 4×30-45 sec. Probeer vandaag langer te staan zonder steun.' },
+          { letter: 'G2', text: 'Ring Dip met tempo — 4×5 (3-1-3 tempo: 3 sec omlaag, 1 sec hold onderaan, 3 sec omhoog).' },
+          { letter: 'G3', text: 'Strict Toes-to-Bar of V-Up — 4×8. Controleer de beweging — geen swing.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset — Accessory',
+        sets: '3 rondes',
+        note: '90 sec rust na elke ronde.',
+        items: [
+          { letter: 'A1', text: 'Glute Ham Raise of Nordic Curl — 3×5-6. Meest effectieve hamstring oefening voor krachtopbouw.' },
+          { letter: 'A2', text: 'DB Hammer Curl — 3×12. Brachialis + brachioradialis: grip strength voor CF.' },
+          { letter: 'A3', text: 'Band Pull-Apart — 3×15. Schouder gezondheid, rotator cuff. Doe dit als herstel-oefening.' },
+        ]
+      },
+      { type: 'tip', text: '🔄 Superset met 3 oefeningen: ga van A1 naar A2 naar A3 zonder rust. Dan 90 sec rusten. Dit bespaart tijd én vergroot de metabole stress.' }
+    ]
+  },
+
+  // ─── WEEK 4 ───
+  {
+    week: 4, session: 'A', label: 'Squat Volume Peak + Push', icon: '🏋️', iconClass: 'si-a', duration: '80–90 min',
+    phase: 'Fase 2 – Volume opbouw',
+    tip: 'Dit is de zwaarste volumeweek. Na vandaag ga je naar hogere intensiteit/lager volume. Noteer alles goed — dit zijn je referentiepunten voor fase 3.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk (volume piek)',
+        exercises: [
+          { name: 'Paused Back Squat', scheme: '4×4+', sets: 4, note: '2 sec pauze onderaan bij EMSG (every set). +/- geeft aan: doe zo veel als je kunt (minimum 4). Dit bouwt de "hole strength" die in CF essentieel is.' },
+          { name: 'Close Grip Bench Press', scheme: '4×6', sets: 4, note: 'Handen ±60cm uit elkaar. Meer tricepsfocus. Elbows ±45° van het lichaam, niet wijd.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset A',
+        sets: '4 rondes',
+        note: 'Zwaar en bewust. Neem 2 min rust na elke ronde.',
+        items: [
+          { letter: 'A1', text: 'Barbell Hip Thrust — 4×8. Schouderbladen op de bench, duw heupen omhoog, klem billen aan op de top. Beste glute-oefening.' },
+          { letter: 'A2', text: 'Z-Press (seated on floor, OHP) — 4×8. Benen gestrekt voor je. Dwingt torso rechtop en schouders stabiel. Direct overhead positie verbetering.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Accessory (20 min)',
+        duration: '20 minuten',
+        note: 'Vijf krachtsgerichte oefeningen. Gebruik vaste gewichten die je al kent — geen experimenteren deze week.',
+        minutes: [
+          { min: 'MIN 1', text: 'Front Rack Reverse Lunge — 6/been. Barbell in front rack positie (CF-specifiek).' },
+          { min: 'MIN 2', text: 'Incline DB Row (1 arm) — 8/arm. Borstkas op schuine bank, volledig arm-bereik.' },
+          { min: 'MIN 3', text: 'KB Windmill — 5/zijde. Stabiliteit schouder + laterale heupkracht. Langzaam en bewust.' },
+          { min: 'MIN 4', text: 'Dip (weighted of bodyweight) — 8 reps. Elbows achteruit, volledige range.' },
+          { min: 'MIN 5', text: 'Stir the Pot (plank op Swiss ball) — 10 rotaties. Anti-extensie core stabiliteit.' },
+          { min: 'Herhaal', text: '× 4 (totaal 20 min)' },
+        ]
+      },
+      { type: 'tip', text: '📝 Einde van fase 1-2: vergelijk je gewichten met week 1. Je zou 5–10kg vooruit moeten zijn op de compounds. Als dat niet zo is, pas je voeding of herstel aan.' }
+    ]
+  },
+  {
+    week: 4, session: 'B', label: 'Hinge + Upper Body + Gymnastics', icon: '🤸', iconClass: 'si-b', duration: '80–90 min',
+    phase: 'Fase 2 – Volume opbouw',
+    tip: 'Laatste volumeweek. Focus: elke oefening technisch perfect uitvoeren onder vermoeidheid. Dit is je echte krachtstest.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk',
+        exercises: [
+          { name: 'Romanian Deadlift (barbell)', scheme: '4×6', sets: 4, note: 'Hamstring stretch maximaliter. Houd rug recht, voel de spanning in de hamstrings — dit is geen deadlift maar een hamstring-targeting oefening.' },
+          { name: 'Weighted Chin-Up', scheme: '4×5', sets: 4, note: 'Onderhandse greep (supinatie), ellebogen naar heup. Krachtige "closing" beweging voor bicep + lats.' },
+        ]
+      },
+      {
+        type: 'gymnastics',
+        label: 'Gymnastics Focus (week 4)',
+        note: 'Probeer een progressie-stap verder te gaan dan week 2. 4 sets, 2 min rust.',
+        items: [
+          { letter: 'G1', text: 'HSPU negatives of Pike Push-Up met deficiency — 4×5. Langzamer (4-5 sec) omlaag.' },
+          { letter: 'G2', text: 'False Grip Ring Row — 4×8. False grip is vereist voor muscle-ups. Oefen de grip hier veilig.' },
+          { letter: 'G3', text: 'Candlestick to Pistol Squat poging — 4×5/been. Mobility + kracht in één beweging.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Accessory (12 min)',
+        duration: '12 minuten',
+        note: 'Korter maar intenser. Dit is de afsluiting van je volumefase.',
+        minutes: [
+          { min: 'MIN 1', text: 'Single Leg Press (of Leg Press) — 10/been. Voet hoog op het platform voor meer hamstring/glute.' },
+          { min: 'MIN 2', text: 'Seated Cable Row — 12 reps. Elbows naar achteren, schouderbladen samenbrengen.' },
+          { min: 'MIN 3', text: 'Copenhagen Plank — 20 sec/zijde. Adductor strength: essentieel voor squat stabiliteit.' },
+          { min: 'Herhaal', text: '× 4 (totaal 12 min)' },
+        ]
+      },
+      { type: 'tip', text: '🛏️ Herstel tip: na week 4 is een extra rustdag prima. Slaap 8u, eet eiwitrijk. Je spieren groeien tijdens rust, niet tijdens training.' }
+    ]
+  },
+
+  // ─── WEEK 5 ───
+  {
+    week: 5, session: 'A', label: 'Squat Intensiteit + Push', icon: '🏋️', iconClass: 'si-a', duration: '75–85 min',
+    phase: 'Fase 3 – Intensiteit',
+    tip: 'Volume daalt, gewicht stijgt. Werk nu met 82–87% van je maximum. Minder sets, maar elke set telt. Rust langer (3–4 min) tussen compoundsets.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk (hoog gewicht)',
+        exercises: [
+          { name: 'Back Squat', scheme: '4×4', sets: 4, note: '10–15kg meer dan je week 3 gewicht. Als de 4e rep moeilijk is: goed. Als de 2e al moeilijk is: verlaag. RPE 8/10.' },
+          { name: 'Push Press', scheme: '4×4', sets: 4, note: 'Explosief, maximale power. Verplaats de bar zo snel mogelijk. Dit traint je rate of force development — CrossFit-goud.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset A – Power',
+        sets: '3 rondes',
+        note: '2 min rust. Krachts-focus, niet volume.',
+        items: [
+          { letter: 'A1', text: 'Jump Squat (bodyweight of met gewichtsjas) — 3×5. Explosief omhoog, zachte landing, direct herhalen.' },
+          { letter: 'A2', text: 'Weighted Ring Dip — 3×5. Dip belt of DB tussen de benen. Volle ROM.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Accessory (16 min)',
+        duration: '16 minuten',
+        note: 'Kracht-EMOM. Gebruik zware gewichten die je net kunt voltooien binnen de minuut.',
+        minutes: [
+          { min: 'MIN 1', text: 'Barbell Reverse Lunge — 5/been. Meer voorwaartse spierketen dan normale lunge.' },
+          { min: 'MIN 2', text: 'DB Incline Bench Press — 8 reps. Zwaarder dan voorheen. Spotters/dumbbells voorzichtig neerzetten.' },
+          { min: 'MIN 3', text: 'GHD Hip Extension (of Back Extension) — 10 reps met gewicht. Thoracale extensie kracht.' },
+          { min: 'MIN 4', text: 'Tricep Close-Grip Push-Up met +15kg plate op rug — 8 reps.' },
+          { min: 'Herhaal', text: '× 4 (totaal 16 min)' },
+        ]
+      },
+      { type: 'tip', text: '⬆️ Intensiteitsfase: je CAN NOT verminderen in techniek om meer gewicht te pakken. Liever 5kg minder met perfecte techniek dan blessure.' }
+    ]
+  },
+  {
+    week: 5, session: 'B', label: 'Hinge Intensiteit + Gymnastics', icon: '🤸', iconClass: 'si-b', duration: '75–85 min',
+    phase: 'Fase 3 – Intensiteit',
+    tip: 'Deadlift gaat omhoog in gewicht. Dit is waar weken 1–4 voor waren. Vertrouw op je techniek. Warm goed op: 50%, 65%, 80% van werkgewicht voor de eerste werkset.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk (zwaar)',
+        exercises: [
+          { name: 'Deadlift (conventional)', scheme: '4×3', sets: 4, note: 'Zware triples. Geen snelheid verliezen op rep 3. Mocht techniek afnemen: stop en noteer het als 2. Kwaliteit boven alles.' },
+          { name: 'Barbell Row (overhand)', scheme: '4×5', sets: 4, note: 'Explosief omhoog, 2 sec hold bovenin. Torso 45° naar voren, niet horizontaal zoals Pendlay.' },
+        ]
+      },
+      {
+        type: 'gymnastics',
+        label: 'Gymnastics – Intensiteit',
+        note: 'Minder sets (3), maar moeilijkere varianten. Focus op het leren van nieuwe skills.',
+        items: [
+          { letter: 'G1', text: 'Free Handstand Press-to-Hold of Kick-up to Handstand — 3×5 pogingen. Zo lang als mogelijk vasthouden.' },
+          { letter: 'G2', text: 'Weighted Ring Dip — 3×4 (dip belt). Als je hiermee kan: je bent klaar voor muscle-up training.' },
+          { letter: 'G3', text: 'Toes-to-Bar strict — 3×8. Geen swing, pure core + heupflexor kracht.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset – Posterior + Schouder',
+        sets: '3 rondes',
+        note: '90 sec rust. Zwaar maar beheersbaar.',
+        items: [
+          { letter: 'A1', text: 'Single Leg Romanian Deadlift (barbell) — 3×5/been. Uitdaging voor proprioceptie en hamstring kracht.' },
+          { letter: 'A2', text: 'Arnold Press (standing) — 3×8. Meer range of motion dan reguliere OHP. Rotator cuff actief.' },
+          { letter: 'A3', text: 'Face Pull met external rotation — 3×12. Schouderbladen TERUG en OMLAAG. Essentieel voor overhead gezondheid.' },
+        ]
+      },
+      { type: 'tip', text: '🏆 Je bevindt je nu in de intensiteitsfase. Je lichaam past zich aan — vermoeidheid is normaal. Eet meer op trainingsdagen, slaap langer.' }
+    ]
+  },
+
+  // ─── WEEK 6 ───
+  {
+    week: 6, session: 'A', label: 'Squat Max Strength + Push', icon: '🏋️', iconClass: 'si-a', duration: '75–85 min',
+    phase: 'Fase 3 – Intensiteit',
+    tip: 'Week 6 is een herhaling van week 5 maar met +2.5–5kg. Je bent nu klaar om grotere gewichten te verplaatsen. Vertrouw op het process.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk',
+        exercises: [
+          { name: 'Front Squat', scheme: '4×4', sets: 4, note: 'Wisseling van back squat naar front squat. Zwaarder dan week 2. Elbow positie is alles — laat die niet zakken.' },
+          { name: 'Push Press', scheme: '4×3', sets: 4, note: 'Nog zwaarder dan week 5. Maximum explosiviteit. Denk aan: "duw je zelf onder de bar" in plaats van "duw de bar omhoog".' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset A',
+        sets: '3 rondes',
+        note: '2 min rust. Intensiteit over volume.',
+        items: [
+          { letter: 'A1', text: 'Pause Squat (2 sec hold) — 3×5. Gewicht uit week 1–2 maar met pauze. Bouwt maximale kracht in de "hole".' },
+          { letter: 'A2', text: 'Weighted Push-Up (plate op rug) — 3×8. Alternatief voor bench. Core stabiliteit vereist.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Accessory (16 min)',
+        duration: '16 minuten',
+        note: 'Zware kracht-EMOM. Let op: geen cardio-tempo, kracht-tempo. Beheers elke rep.',
+        minutes: [
+          { min: 'MIN 1', text: 'Barbell Hip Thrust — 6 reps. Zwaarder dan week 4. Pauze van 1 sec op de top.' },
+          { min: 'MIN 2', text: 'DB Z-Press — 8 reps. Recht zitten, geen steun voor de rug, pure schouderkracht.' },
+          { min: 'MIN 3', text: 'Deadball/Sandbag over shoulder — 5/zijde. Functionele krachtexplosie. Uitstekend voor CF-WODs.' },
+          { min: 'MIN 4', text: 'Weighted Plank (plate op rug) — 45 sec. Core kracht = bescherming bij zware lifts.' },
+          { min: 'Herhaal', text: '× 4 (totaal 16 min)' },
+        ]
+      },
+      { type: 'tip', text: '🎯 Je bent 75% door het programma. Maak een foto van je logboek of sla gewichten op. Je gaat dit nodig hebben om progressie te meten.' }
+    ]
+  },
+  {
+    week: 6, session: 'B', label: 'Hinge + Gymnastics Peak', icon: '🤸', iconClass: 'si-b', duration: '80–90 min',
+    phase: 'Fase 3 – Intensiteit',
+    tip: 'Deadlift near-maximum vandaag. Gymnastics op het hoogste niveau dat je kunt. Na deze sessie heb je 1 topweek en dan deload.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk (piek)',
+        exercises: [
+          { name: 'Sumo Deadlift', scheme: '4×3', sets: 4, note: 'Zwaarste sumo van het programma. Concentreer je op de setup: lat engagement, heupen laag, ronde rug NOOIT. Trek de "vloer uit elkaar" met je voeten.' },
+          { name: 'Weighted Chin-Up', scheme: '4×4', sets: 4, note: 'Zwaar. Volledige ROM. Als je de 4e niet haalt, noteer het dan als 3 en verlaag volgende set.' },
+        ]
+      },
+      {
+        type: 'gymnastics',
+        label: 'Gymnastics – Peak Week',
+        note: 'Dit zijn de moeilijkste gymnastics sets van het programma. Neem 2.5–3 min rust.',
+        items: [
+          { letter: 'G1', text: 'Freestanding Handstand or HSPU (strict) — 4×max. Noteer hoeveel je haalt. Dit is je baseline voor vergelijking.' },
+          { letter: 'G2', text: 'Muscle-Up (ring of bar) of Weighted Ring Dip — 4×3-5. Maximum effort.' },
+          { letter: 'G3', text: 'Pistol Squat — 4×5/been. Zwaar bodyweight. Als dit gaat: probeer met gewicht.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset – Accessory (kort)',
+        sets: '3 rondes',
+        note: '90 sec rust. Kort maar effectief.',
+        items: [
+          { letter: 'A1', text: 'GHD Sit-Up of Weighted Sit-Up — 3×10. Volledige ROM, handen achter het hoofd.' },
+          { letter: 'A2', text: 'DB Chest Fly — 3×12. Stretch in de pecs, controleer omlaag en duw samen bovenin.' },
+        ]
+      },
+      { type: 'tip', text: '🔝 Gymnastics piek: noteer vandaag het maximale aantal HSPU, ring dips, en pull-ups dat je kunt. Dit zijn je benchmark-nummers voor CrossFit.' }
+    ]
+  },
+
+  // ─── WEEK 7 ───
+  {
+    week: 7, session: 'A', label: 'Peak Week – Squat + Push PR', icon: '🏋️', iconClass: 'si-a', duration: '75–85 min',
+    phase: 'Fase 4 – Peak & PR',
+    tip: 'Dit is je PR-week. Slaap goed, eet goed, wees klaar. Warm super goed op. Probeer vandaag een nieuw maximaal gewicht op squat en press.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Peak Compound Sets',
+        exercises: [
+          { name: 'Back Squat (PR poging)', scheme: '3×3 + 1×1', sets: 4, note: 'Doe 3 sets van 3 met je beste werkgewicht. Dan 1 enkele maximale herhaling. Dit is je "working 1RM". Niet geforceerd — stop bij verlies van techniek.' },
+          { name: 'Push Press (PR poging)', scheme: '3×3 + 1×1', sets: 4, note: 'Zelfde aanpak als squat. Maximale explosiviteit bij de single. Noteer het gewicht — dit is een referentiepunt voor je CF.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset – Ondersteunend (licht)',
+        sets: '3 rondes',
+        note: 'Lichtere sets vandaag als ondersteunende back-off werk. 90 sec rust.',
+        items: [
+          { letter: 'A1', text: 'Box Squat (60–65% max) — 3×5. Leer de squat vanuit stilstand te initiëren. Explosief omhoog.' },
+          { letter: 'A2', text: 'Landmine Press — 3×8/arm. Schuine drukbeweging: schouder gezondheid terwijl je sterk drukt.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Accessory (12 min)',
+        duration: '12 minuten',
+        note: 'Rustigere EMOM – geen maximale gewichten. Dit is herstel na de zware compounds.',
+        minutes: [
+          { min: 'MIN 1', text: 'Goblet Squat — 8 reps met licht gewicht. Beweeglijkheid en herstel van de zware squat.' },
+          { min: 'MIN 2', text: 'DB Shoulder Complex: 5× lateral raise + 5× front raise + 5× rear delt fly achter elkaar.' },
+          { min: 'MIN 3', text: 'Copenhagen Adductor Hold — 20 sec/zijde.' },
+          { min: 'Herhaal', text: '× 4 (totaal 12 min)' },
+        ]
+      },
+      { type: 'tip', text: '🏅 PR-tip: "Warm-up to the PR". Ga 50%×5, 65%×3, 75%×2, 85%×1, 90%×1, dan PR-poging. Sla NOOIT de tussenstappen over.' }
+    ]
+  },
+  {
+    week: 7, session: 'B', label: 'Peak Week – Deadlift + Gymnastics PR', icon: '🤸', iconClass: 'si-b', duration: '80–90 min',
+    phase: 'Fase 4 – Peak & PR',
+    tip: 'Deadlift PR vandaag. Wacht tot je volledig uitgerust bent voor de zware lifts. Gymnastics: probeer een max-set van je beste skill.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Peak Deadlift',
+        exercises: [
+          { name: 'Deadlift PR poging', scheme: '3×3 + 1×1', sets: 4, note: 'Conventional of sumo (welke je sterker voelt). Warm-up protocol: zie sessie A tip. De 1RM is je absolute max met goede techniek. Nooit met ronde rug.' },
+          { name: 'Weighted Pull-Up Max', scheme: '3×3 + 1×max', sets: 4, note: 'Maximale gewichtsset van 3, dan 1 set met maximum reps. Dit is je pull-up kracht benchmark.' },
+        ]
+      },
+      {
+        type: 'gymnastics',
+        label: 'Gymnastics PR Test',
+        note: 'Test jezelf: hoeveel kan je nu? 2.5–3 min rust tussen sets.',
+        items: [
+          { letter: 'G1', text: 'Max Handstand Hold (freestanding) — 3 pogingen. Noteer de langste hold in seconden.' },
+          { letter: 'G2', text: 'Max Ring Dips (strict) — 3 max sets. Noteer alle reps. Dit zijn je "after 8 weeks" benchmarks.' },
+          { letter: 'G3', text: 'Max Strict Pull-Ups (no kip) — 2 max sets. Vergelijk met je beginwaarde.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset – Finisher',
+        sets: '3 rondes',
+        note: 'Lichte afsluiting. 90 sec rust.',
+        items: [
+          { letter: 'A1', text: 'Reverse Hyper of Back Extension — 3×12. Decompressie lage rug na deadlift.' },
+          { letter: 'A2', text: 'Farmer\'s Carry — 3×20m. Zwaar als je kunt dragen. Grip + core + trap finisher.' },
+        ]
+      },
+      { type: 'tip', text: '🎉 Na week 7: je hebt je sterkste punt bereikt. Deload next week. Wees trots op hoever je bent gekomen — noteer al je PRs!' }
+    ]
+  },
+
+  // ─── WEEK 8 (DELOAD) ───
+  {
+    week: 8, session: 'A', label: 'Deload – Squat + Push (60%)', icon: '🏋️', iconClass: 'si-a', duration: '60–75 min',
+    phase: 'Fase 5 – Deload & Herstel',
+    tip: 'DELOAD: gebruik 60% van je week 7 gewichten. Dit is geen rusteweek — het is een actief herstelweek. Je lichaam consolideert adaptaties. Ga NIET harder dan voorgeschreven.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk (60% intensiteit)',
+        exercises: [
+          { name: 'Back Squat (deload)', scheme: '3×5 @ 60%', sets: 3, note: 'Gebruik 60% van je PR-gewicht uit week 7. Focus op perfect techniek. Dit voelt licht en dat is de bedoeling — je vult je glycogeenvoorraden aan en herstelt gewrichten.' },
+          { name: 'Strict Press (deload)', scheme: '3×5 @ 60%', sets: 3, note: 'Zelfde principe. Langzaam en bewust bewegen. Gebruik dit om technische details aan te scherpen.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Superset – Mobility & Herstel',
+        sets: '3 rondes',
+        note: 'Licht gewicht, focus op beweeglijkheid. 60 sec rust.',
+        items: [
+          { letter: 'A1', text: 'Cossack Squat (bodyweight of met lichte KB) — 3×6/zijde. Heupbeweeglijkheid en adductor stretch.' },
+          { letter: 'A2', text: 'Scapular Push-Up — 3×10. Protreer en retracteer schouderbladen. Actieve rust voor de schouders.' },
+        ]
+      },
+      {
+        type: 'emom',
+        label: 'EMOM Mobility (10 min)',
+        duration: '10 minuten',
+        note: 'Geen gewichten deze EMOM. Mobiliteit en activatie. Je lichaam zal je dankbaar zijn.',
+        minutes: [
+          { min: 'MIN 1', text: 'World\'s Greatest Stretch — 5/zijde. Hip flexor + thoracale rotatie in één beweging.' },
+          { min: 'MIN 2', text: 'Band Pull-Apart + Dislocate — 10+5 reps. Schouderhealth na weken van zware overhead.' },
+          { min: 'MIN 3', text: 'Hip 90/90 Switches — 5/zijde. Interne en externe heuprotatie.' },
+          { min: 'MIN 4', text: 'Dead Hang — 30 sec. Ruggengraat decompressie na weken van axiale belasting.' },
+          { min: 'MIN 5', text: 'Ankle Circles + Squat Hold — 30 sec diep squat hold.' },
+          { min: 'Herhaal', text: '× 2 (totaal 10 min)' },
+        ]
+      },
+      { type: 'tip', text: '🌊 Deload is geen zwakte. De beste atleten ter wereld deloaden strategisch. Je resultaten worden zichtbaar NADAT je lichaam herstelt, niet erbij.' }
+    ]
+  },
+  {
+    week: 8, session: 'B', label: 'Deload – Hinge + Gymnastics (60%)', icon: '🤸', iconClass: 'si-b', duration: '60–70 min',
+    phase: 'Fase 5 – Deload & Herstel',
+    tip: 'Laatste sessie van het 8-wekenprogramma. Gebruik de gymnastics als skill-sessie: geen maximale effort, maar techniek verfijnen.',
+    blocks: [
+      {
+        type: 'compound',
+        label: 'Compound Werk (deload)',
+        exercises: [
+          { name: 'Deadlift (deload)', scheme: '3×4 @ 60%', sets: 3, note: '60% van je PR. Voel hoe licht het is vergeleken met week 1. Dit is hoe ver je bent gekomen.' },
+          { name: 'Pull-Up (geen gewicht)', scheme: '3×6', sets: 3, note: 'Bodyweight. Langzaam, met maximale lat-activatie. Dit is een coördnatiesessie, niet een krachtstest.' },
+        ]
+      },
+      {
+        type: 'gymnastics',
+        label: 'Gymnastics Deload – Techniek',
+        note: '3 sets, geen maximale effort. Focus op perfectie van beweging.',
+        items: [
+          { letter: 'G1', text: 'Handstand Kick-Up + Hold — 3×5 pogingen. Geniet van de controle. Je schouders zijn nu sterker dan 8 weken geleden.' },
+          { letter: 'G2', text: 'Ring Support Hold (top positie ring dip) — 3×30 sec. Ringen stabiel houden, ringen naar buiten roteren.' },
+          { letter: 'G3', text: 'Tuck-up Hold of L-Sit progression — 3×20 sec. Laatste gymnastics werk van het programma.' },
+        ]
+      },
+      {
+        type: 'superset',
+        label: 'Finisher – Reflectie Sets',
+        sets: '2 rondes',
+        note: 'Licht. Dit is de afsluiting van 8 weken werk.',
+        items: [
+          { letter: 'A1', text: 'Reverse Lunge (bodyweight of licht) — 2×10/been. Bewust, gecontroleerd.' },
+          { letter: 'A2', text: 'Single Arm DB Row (licht, hoog volume) — 2×15/arm. Pump de lats. Afsluiting.' },
+        ]
+      },
+      { type: 'tip', text: '🎯 Programma VOLTOOID! Vergelijk nu je gewichten, gymnastics benchmarks en lichaamsgevoelens met week 1. Plan je volgende cyclus: begin opnieuw met 5–10% zwaarder of kies een nieuwe focus. Goed werk! 💪' }
+    ]
+  },
+];
+
+// ============================
+// STATE
+// ============================
+let currentWeek = 1;
+let weights = JSON.parse(localStorage.getItem('cfx_weights') || '{}');
+let completedSessions = JSON.parse(localStorage.getItem('cfx_completed') || '{}');
+let history = JSON.parse(localStorage.getItem('cfx_history') || '[]');
+let openSessions = {};
+
+// ============================
+// RENDER
+// ============================
+function getPhase(week) {
+  if (week <= 2) return 'Fase 1 – Activering';
+  if (week <= 4) return 'Fase 2 – Volume';
+  if (week <= 6) return 'Fase 3 – Intensiteit';
+  if (week === 7) return 'Fase 4 – Peak';
+  return 'Fase 5 – Deload';
 }
 
-function loadData() {
-  try {
-    const s = localStorage.getItem('cfkracht_v2');
-    if (s) data = JSON.parse(s);
-  } catch(e) { data = {}; }
+function renderWeekGrid() {
+  const grid = document.getElementById('weekGrid');
+  grid.innerHTML = '';
+  for (let w = 1; w <= 8; w++) {
+    const done = isWeekComplete(w);
+    const btn = document.createElement('div');
+    btn.className = 'week-btn' + (w === currentWeek ? ' active' : '') + (done ? ' completed' : '');
+    btn.innerHTML = `<div class="wn">${done ? '✓' : w}</div><div class="wl">${getPhase(w).split('–')[0].trim()}</div>`;
+    btn.onclick = () => { currentWeek = w; renderAll(); };
+    grid.appendChild(btn);
+  }
 }
 
-function getKey(week, session, exIdx, setIdx) {
-  return `w${week}_s${session}_e${exIdx}_set${setIdx}`;
-}
-function getDoneKey(week, session, exIdx) {
-  return `done_w${week}_s${session}_e${exIdx}`;
-}
-function getNotesKey(week, session) {
-  return `notes_w${week}_s${session}`;
+function isWeekComplete(w) {
+  const sessions = program.filter(s => s.week === w);
+  return sessions.every(s => completedSessions[`${s.week}-${s.session}`]);
 }
 
-// ===================== RENDER =====================
-function renderNav() {
-  const nav = document.getElementById('weekNav');
-  nav.innerHTML = '';
-  program.weeks.forEach((w, i) => {
-    const btn = document.createElement('button');
-    btn.className = 'nav-btn' + (i === currentWeek ? ' active' : '');
-    btn.textContent = `W${w.week}`;
-    btn.onclick = () => { currentWeek = i; renderAll(); };
-    nav.appendChild(btn);
-  });
-}
+function renderSessions() {
+  const container = document.getElementById('sessionContainer');
+  container.innerHTML = '';
+  const sessions = program.filter(s => s.week === currentWeek);
 
-function calcProgress() {
-  const week = program.weeks[currentWeek];
-  let total = 0, done = 0;
-  week.sessions.forEach((sess, si) => {
-    sess.exercises.forEach((ex, ei) => {
-      total++;
-      const k = getDoneKey(currentWeek, si, ei);
-      if (data[k]) done++;
+  // Phase badge
+  const badge = document.createElement('div');
+  badge.className = 'phase-badge';
+  badge.innerHTML = `<span class="dot"></span>${sessions[0]?.phase || ''}`;
+  container.appendChild(badge);
+
+  sessions.forEach(session => {
+    const key = `${session.week}-${session.session}`;
+    const isOpen = openSessions[key];
+    const isDone = completedSessions[key];
+
+    const card = document.createElement('div');
+    card.className = 'session-card';
+
+    let blocksHTML = '';
+    session.blocks.forEach((block, bi) => {
+      if (block.type === 'compound') {
+        blocksHTML += `<div class="block-label"><span class="bl-accent">●</span> Compound Werk</div>`;
+        block.exercises.forEach((ex, ei) => {
+          const exKey = `${key}-b${bi}-e${ei}`;
+          const numSets = ex.sets || 4;
+          let setsHTML = '';
+          for (let s = 0; s < numSets; s++) {
+            const val = weights[`${exKey}-s${s}`] || '';
+            setsHTML += `
+              <div class="set-input-wrap">
+                <div class="set-label">Set ${s+1}</div>
+                <input class="set-input${val ? ' logged' : ''}" type="text" placeholder="kg×reps"
+                  value="${val}"
+                  onchange="saveWeight('${exKey}-s${s}', this.value, this)"
+                  inputmode="decimal">
+              </div>`;
+          }
+          blocksHTML += `
+            <div class="exercise-row">
+              <div class="ex-top">
+                <div class="ex-name">${ex.name}</div>
+                <div class="ex-scheme">${ex.scheme}</div>
+              </div>
+              <div style="font-size:11px;color:#888;margin-bottom:8px;line-height:1.5">${ex.note}</div>
+              <div class="sets-grid">${setsHTML}</div>
+            </div>`;
+        });
+      } else if (block.type === 'superset') {
+        blocksHTML += `<div class="block-label"><span style="color:#a78bfa">●</span> ${block.label || 'Superset'}</div>`;
+        let itemsHTML = block.items.map(i => `
+          <div class="ss-item">
+            <span class="ss-letter">${i.letter}</span>
+            <span class="ss-text">${i.text}</span>
+          </div>`).join('');
+        blocksHTML += `
+          <div class="superset-box">
+            <div class="superset-header">
+              <span class="superset-title">SUPERSET</span>
+              <span class="superset-sets">${block.sets}</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-bottom:8px">${block.note || ''}</div>
+            ${itemsHTML}
+          </div>`;
+      } else if (block.type === 'emom') {
+        blocksHTML += `<div class="block-label"><span class="bl-accent2">●</span> ${block.label || 'EMOM'}</div>`;
+        let minutesHTML = block.minutes.map(m => `
+          <div class="emom-minute">
+            <span class="minute-badge">${m.min}</span>
+            <span class="minute-text">${m.text}</span>
+          </div>`).join('');
+        blocksHTML += `
+          <div class="emom-box">
+            <div class="emom-header">
+              <span class="emom-title">EMOM</span>
+              <span class="emom-duration">${block.duration}</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-bottom:8px">${block.note || ''}</div>
+            ${minutesHTML}
+          </div>`;
+      } else if (block.type === 'gymnastics') {
+        blocksHTML += `<div class="block-label"><span style="color:#60a5fa">●</span> ${block.label || 'Gymnastics'}</div>`;
+        let itemsHTML = block.items.map(i => `
+          <div class="ss-item">
+            <span class="ss-letter" style="color:#60a5fa;background:rgba(96,165,250,0.12)">${i.letter}</span>
+            <span class="ss-text">${i.text}</span>
+          </div>`).join('');
+        blocksHTML += `
+          <div class="superset-box" style="border-left-color:#60a5fa">
+            <div class="superset-header">
+              <span class="superset-title" style="color:#60a5fa">GYMNASTICS</span>
+              <span class="superset-sets">${block.sets || '3 sets'}</span>
+            </div>
+            <div style="font-size:11px;color:#888;margin-bottom:8px">${block.note || ''}</div>
+            ${itemsHTML}
+          </div>`;
+      } else if (block.type === 'tip') {
+        blocksHTML += `<div class="tip-box"><span class="tip-icon">💡</span><span class="tip-text">${block.text}</span></div>`;
+      }
     });
+
+    card.innerHTML = `
+      <div class="session-header" onclick="toggleSession('${key}')">
+        <div class="session-title">
+          <div class="session-icon ${session.iconClass}">${session.icon}</div>
+          <div>
+            <div class="session-name">${isDone ? '✅ ' : ''}Sessie ${session.session} – ${session.label}</div>
+            <div class="session-sub">${session.duration} • ${session.blocks.filter(b=>b.type==='compound').reduce((a,b)=>a+(b.exercises?.length||0),0)+session.blocks.filter(b=>['superset','gymnastics'].includes(b.type)).reduce((a,b)=>a+(b.items?.length||0),0)+session.blocks.filter(b=>b.type==='emom').length} oefeningen</div>
+          </div>
+        </div>
+        <div class="session-meta">
+          <span class="duration-tag">${session.duration}</span>
+          <span class="chevron ${isOpen ? 'open' : ''}">▼</span>
+        </div>
+      </div>
+      <div class="exercises ${isOpen ? 'open' : ''}">
+        <div class="tip-box" style="margin-top:8px"><span class="tip-icon">📋</span><span class="tip-text"><strong>Sessietip:</strong> ${session.tip}</span></div>
+        ${blocksHTML}
+        <button class="done-btn ${isDone ? 'done' : ''}" onclick="markDone('${key}', '${session.label}', ${session.week}, '${session.session}')">
+          ${isDone ? '✅ SESSIE VOLTOOID' : '🏁 SESSIE MARKEREN ALS VOLTOOID'}
+        </button>
+      </div>`;
+
+    container.appendChild(card);
   });
-  return { total, done };
+}
+
+function toggleSession(key) {
+  openSessions[key] = !openSessions[key];
+  renderSessions();
+}
+
+function saveWeight(key, value, el) {
+  weights[key] = value;
+  localStorage.setItem('cfx_weights', JSON.stringify(weights));
+  if (value) el.classList.add('logged');
+  else el.classList.remove('logged');
+}
+
+function markDone(key, label, week, session) {
+  if (completedSessions[key]) return;
+  completedSessions[key] = Date.now();
+  localStorage.setItem('cfx_completed', JSON.stringify(completedSessions));
+
+  // Collect logged weights for history
+  const loggedWeights = Object.entries(weights)
+    .filter(([k]) => k.startsWith(`${key}-`))
+    .map(([k, v]) => v)
+    .filter(Boolean);
+
+  history.unshift({
+    key, label, week, session,
+    date: new Date().toLocaleDateString('nl-NL'),
+    weights: loggedWeights.slice(0, 8)
+  });
+  localStorage.setItem('cfx_history', JSON.stringify(history));
+
+  showToast('Sessie voltooid! 💪');
+  renderAll();
 }
 
 function renderAll() {
-  renderNav();
-  const week = program.weeks[currentWeek];
-  document.getElementById('headerWeek').textContent = `WEEK ${week.week}`;
+  updateHeader();
+  renderWeekGrid();
+  renderSessions();
+  renderStats();
+  renderHistory();
+}
 
-  const { total, done } = calcProgress();
-  const pct = total ? Math.round((done / total) * 100) : 0;
+function updateHeader() {
+  document.getElementById('currentWeekBadge').textContent = `WEEK ${currentWeek}`;
+  const progress = (Object.keys(completedSessions).length / 16) * 100;
+  document.getElementById('progressFill').style.width = Math.min(100, progress) + '%';
+}
 
-  let html = `
-    <div class="week-progress">
-      <h3>WEEK ${week.week} — ${week.focus}</h3>
-      <div class="prog-bar-bg"><div class="prog-bar-fill" style="width:${pct}%"></div></div>
-      <div class="prog-label"><span>${done}/${total} oefeningen klaar</span><span>${pct}%</span></div>
-    </div>
-  `;
+function renderStats() {
+  const sessions = Object.keys(completedSessions).length;
+  const weeks = [...new Set(Object.keys(completedSessions).map(k => k.split('-')[0]))].length;
+  const sets = Object.values(weights).filter(Boolean).length;
+  document.getElementById('statSessions').textContent = sessions;
+  document.getElementById('statWeeks').textContent = weeks;
+  document.getElementById('statTotal').textContent = sets;
+}
 
-  week.sessions.forEach((sess, si) => {
-    html += `
-      <div class="session-block">
-        <div class="session-header">
-          <div>
-            <div class="session-tag">SESSIE ${sess.id}</div>
-            <div class="session-title">${sess.title}</div>
-            <div class="session-meta">⏱ ${sess.duration}</div>
-          </div>
-        </div>
-        <div class="section-divider">MAIN LIFTS</div>
-    `;
-
-    let lastType = 'main';
-    sess.exercises.forEach((ex, ei) => {
-      if (ex.type === 'acc' && lastType === 'main') {
-        html += `<div class="section-divider">ACCESSORY WORK</div>`;
-        lastType = 'acc';
-      }
-      const doneKey = getDoneKey(currentWeek, si, ei);
-      const isDone = !!data[doneKey];
-      const tagClass = ex.type === 'main' ? 'tag-main' : 'tag-acc';
-      const tagLabel = ex.type === 'main' ? 'Main' : 'Accessory';
-
-      html += `<div class="exercise" id="ex_${si}_${ei}">
-        <div class="ex-header">
-          <div class="ex-name">${ex.name}</div>
-          <span class="ex-tag ${tagClass}">${tagLabel}</span>
-        </div>
-        <div class="ex-scheme">${ex.scheme}</div>
-        <div class="sets-grid">`;
-
-      for (let s = 0; s < ex.sets; s++) {
-        const k = getKey(currentWeek, si, ei, s);
-        const val = data[k] || '';
-        html += `<div class="set-row">
-          <div class="set-label">Set ${s + 1} · ${ex.reps} reps</div>
-          <input class="weight-input" type="number" inputmode="decimal" placeholder="0"
-            value="${val}"
-            data-key="${k}"
-            onchange="saveWeight(this)"
-            onfocus="this.select()">
-          <div class="set-unit">kg</div>
-        </div>`;
-      }
-
-      html += `</div>
-        <button class="done-btn ${isDone ? 'completed' : ''}" onclick="toggleDone(${si},${ei})">
-          ${isDone ? '✓ Klaar' : '○ Markeer klaar'}
-        </button>
-      </div>`;
-    });
-
-    const notesKey = getNotesKey(currentWeek, si);
-    const notesVal = data[notesKey] || '';
-    html += `
-      <div class="exercise">
-        <span class="notes-label">📝 SESSIE NOTITIES</span>
-        <textarea class="notes-area" placeholder="Hoe voelde het? PR's? Blessures?" data-key="${notesKey}" onchange="saveNotes(this)">${notesVal}</textarea>
+function renderHistory() {
+  const container = document.getElementById('historyContent');
+  if (history.length === 0) {
+    container.innerHTML = '<div class="history-empty">📭 Nog geen sessies voltooid.<br>Voltooi je eerste sessie om hier je logboek te zien.</div>';
+    return;
+  }
+  container.innerHTML = history.map(h => `
+    <div class="history-entry">
+      <div class="he-top">
+        <div class="he-title">Week ${h.week} – Sessie ${h.session}: ${h.label}</div>
+        <div class="he-date">${h.date}</div>
       </div>
-      </div>`;
-  });
-
-  document.getElementById('mainContent').innerHTML = html;
+      ${h.weights.length ? `<div class="he-ex">Gelogde sets: ${h.weights.join(' | ')}</div>` : '<div class="he-ex" style="color:var(--muted)">Geen gewichten gelogd</div>'}
+    </div>`).join('');
 }
 
-function saveWeight(el) {
-  data[el.dataset.key] = el.value;
-  saveData();
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`view-${name}`).classList.add('active');
+  const tabs = document.querySelectorAll('.tab');
+  const navBtns = document.querySelectorAll('.nav-btn');
+  const map = {program: 0, overview: 1, history: 2};
+  tabs[map[name]]?.classList.add('active');
+  navBtns[map[name]]?.classList.add('active');
+  if (name === 'history') renderHistory();
+  if (name === 'overview') renderStats();
 }
 
-function saveNotes(el) {
-  data[el.dataset.key] = el.value;
-  saveData();
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-function toggleDone(si, ei) {
-  const k = getDoneKey(currentWeek, si, ei);
-  data[k] = !data[k];
-  saveData();
-  renderAll();
-  // Scroll preservation
-  document.getElementById(`ex_${si}_${ei}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-}
-
-// ===================== BOOT =====================
-loadData();
+// INIT
 renderAll();
 </script>
+
 </body>
 </html>
